@@ -1,39 +1,39 @@
-	drop table if exists customers cascade;
+	drop table if exists users cascade;
 	drop table if exists orders cascade;
 	drop table if exists products cascade;
 	drop table if exists reviews cascade;
 
-create table customers(
-customer_id SERIAL primary key,
+create table users(
+user_id VARCHAR primary key,
 first_name VARCHAR(50),
 last_name VARCHAR(50),
 password VARCHAR(50)
 );
 
 create table products(
-product_id SERIAL primary key,
+product_id VARCHAR primary key,
 product_name VARCHAR(50),
 price decimal,
 category VARCHAR
 );
 
 create table orders(
-order_id SERIAL primary key,
+order_id VARCHAR primary key,
 quantity INT,
-customer_id INT,
-product_id INT,
-foreign key (customer_id) references customers (customer_id),
+user_id VARCHAR,
+product_id VARCHAR,
+foreign key (user_id) references users (user_id),
 foreign key (product_id) references products (product_id)
 );
 
 
 
 create table reviews(
-review_id SERIAL primary key,
-customer_id INT,
-product_id INT,
+review_id VARCHAR primary key,
+user_id VARCHAR,
+product_id VARCHAR,
 rate INT,
 comment VARCHAR, 
-foreign key (customer_id) references customers (customer_id),
+foreign key (user_id) references users (user_id),
 foreign key (product_id) references products (product_id)
 );
