@@ -10,11 +10,11 @@ import com.revature.rhshop.utils.ConnectionFaction;
 public class rhshopApp {
   public static void main(String args[]) throws ClassNotFoundException, IOException, SQLException {
     Scanner scan = new Scanner(System.in);
-    // RouterService router = new RouterService();
+    RouterService router = new RouterService();
 
     System.out.println(ConnectionFaction.getInstance().getConnection());
 
-    // router.navigate("/home", scan);
+    router.navigate("/home", scan);
 
 
     scan.close();
