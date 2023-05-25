@@ -30,4 +30,4 @@ replay_pid*
 *target/
 *.properties
 *.vscode
-application.properties
+
