@@ -1,4 +1,4 @@
-package com.revature.app.models;
+package com.mycompany.app.models;
 
 
 import lombok.AllArgsConstructor;

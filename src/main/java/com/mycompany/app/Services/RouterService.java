@@ -1,4 +1,4 @@
-package com.mycompany.app.utils;
+package com.mycompany.app.services;
 
 import java.util.Scanner;
 
