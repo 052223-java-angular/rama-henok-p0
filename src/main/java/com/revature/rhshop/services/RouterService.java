@@ -25,12 +25,12 @@ public class RouterService {
 
             case "/home":
                 //this refers to the class itself(RouterService) because we injected RouterService dependency inside homescreen
-                //new HomeScreen(this).start(scan);  
+                new HomeScreen(this).start(scan);  
             break;
             case "login":
             break;
             case "/register":
-            //new RegisterScreen().start(scan);
+                new RegisterScreen().start(scan);
             break;
             default:
             break;
