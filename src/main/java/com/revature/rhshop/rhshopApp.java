@@ -5,19 +5,22 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import com.revature.rhshop.services.RouterService;
-import com.revature.rhshop.utils.ConnectionFaction;
+import com.revature.rhshop.utils.ConnectionFactory;
+import com.revature.rhshop.utils.Session;
+
 
 public class rhshopApp {
   public static void main(String args[]) throws ClassNotFoundException, IOException, SQLException {
-    Scanner scan = new Scanner(System.in);
-    // RouterService router = new RouterService();
 
-    System.out.println(ConnectionFaction.getInstance().getConnection());
+     Scanner scan = new Scanner(System.in);
 
-    // router.navigate("/home", scan);
+    // Create a new RouterService with a Session
+    RouterService router = new RouterService(new Session());
 
-
-
+    // Navigate to the "/home" route using the router and scanner
+    router.navigate("/home", scan);
+   
+    System.out.println(ConnectionFactory.getInstance().getConnection());
 
     scan.close();
 
