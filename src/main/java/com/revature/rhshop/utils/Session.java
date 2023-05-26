@@ -1,6 +1,6 @@
 package com.revature.rhshop.utils;
 
-import com.revature.rhshop.models.User;
+import com.revature.rhshop.models.Users;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,8 +19,8 @@ public class Session {
     private String username;
     private String roleId;
 
-    public void setSession(User user) {
-        this.id = user.getId();
+    public void setSession(Users user) {
+        this.id = user.getUserId();
         this.username = user.getUsername();
         this.roleId = user.getRoleId();
     }

@@ -13,19 +13,15 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-
-public class OrderItems {
-    private int orderItemId;
-    private int quantity;
-    private float price;
-    private int orderId;
+public class Products {
     private int productId;
-   
+    private String productName;
+    private float price;
+    private int categoryId;
 
-    public OrderItems(int quantity, float price, int orderId, int productId) {
-        this.quantity = quantity;
+    public Products(String productName, float price, int categoryId) {
+        this.productName = productName;
         this.price = price;
-        this.orderId = orderId;
-        this.productId = productId;
+        this.categoryId = categoryId;
     }
 }

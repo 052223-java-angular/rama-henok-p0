@@ -8,14 +8,14 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-import com.revature.rhshop.models.Role;
-import com.revature.rhshop.models.User;
+import com.revature.rhshop.models.Roles;
+import com.revature.rhshop.models.Users;
 import com.revature.rhshop.utils.ConnectionFactory;
 
-public class RoleDAO implements CrudDAO<Role> {
+public class RoleDAO implements CrudDAO<Roles> {
 
     @Override
-    public void save(Role obj) {
+    public void save(Roles obj) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
@@ -33,18 +33,18 @@ public class RoleDAO implements CrudDAO<Role> {
     }
 
     @Override
-    public Role findById(String id) {
+    public Roles findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 
     @Override
-    public List<Role> findAll() {
+    public List<Roles> findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
-    public Optional<Role> findByName(String name) {
+    public Optional<Roles> findByName(String name) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT * FROM roles WHERE name = ?";
 
@@ -53,9 +53,9 @@ public class RoleDAO implements CrudDAO<Role> {
 
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        Role role = new Role();
-                        role.setId(rs.getString("id"));
-                        role.setName(rs.getString("name"));
+                        Roles role = new Roles();
+                        role.setRoleId(rs.getString("id"));
+                        role.setRoleName(rs.getString("name"));
                         return Optional.of(role);
                     }
                 }

@@ -1,5 +1,6 @@
 package com.revature.rhshop.models;
 
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +13,13 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Role {
-    private String id;
-    private String name;
+public class Categories {
+    private int categoryId;
+    private String categoryName;
+   
+
+    public Categories(String categoryName) {
+        this.categoryName = categoryName;
+      
+    }
 }

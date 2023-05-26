@@ -13,14 +13,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class User {
-    private String id;
+public class Users {
+    private String userId;
     private String username;
     private String password;
     private String roleId;
 
-    public User(String username, String password, String roleId) {
-        this.id = UUID.randomUUID().toString();
+    public Users(String username, String password, String roleId) {
+        this.userId = UUID.randomUUID().toString();
         this.username = username;
         this.password = password;
         this.roleId = roleId;

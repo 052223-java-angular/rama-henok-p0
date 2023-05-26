@@ -1,5 +1,6 @@
 package com.revature.rhshop.models;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Review {
-    private String id;
-    private int rating;
-    private String comment;
-    private String user_id;
-    private String product_id;
+public class Roles {
+    private String roleId;
+    private String roleName;
 }
