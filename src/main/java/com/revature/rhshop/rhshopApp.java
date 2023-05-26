@@ -17,6 +17,8 @@ public class rhshopApp {
     // router.navigate("/home", scan);
 
 
+
+
     scan.close();
 
   }

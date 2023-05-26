@@ -20,7 +20,8 @@ public class HomeScreen implements IScreen{
             while(true){
                 ClearScreen();
 
-                System.out.print("\n\nWelcome to YOLP!");
+                System.out.print("\n\nWelcome to RH Shop!");
+                System.out.print("\n\n");
                 System.out.print("\n[1] Login Screen");
                 System.out.print("\n[2] Register Screen");
                 System.out.print("\n[x] Exit");
