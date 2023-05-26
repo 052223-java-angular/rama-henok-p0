@@ -13,8 +13,12 @@ public class ConnectionFactory {
     private Connection connection;
 
     //the ConnectionFaction constructor is private because we want the connection to follow singlton 
-    //designe pattern and we can only create one version of this connection and share it 
+    //designe pattern and we can only create one version of this connection and share it
+    //ClassNotNound Exception Handles if Driver can not be loaded
+    //IOException handles if application.properties is not found
+         
     private ConnectionFactory () throws IOException, ClassNotFoundException, SQLException{
+        
         //this will check if the driver is installed
         Class.forName("org.postgresql.Driver");
 
