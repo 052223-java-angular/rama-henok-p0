@@ -22,15 +22,10 @@ public class UserDAO implements CrudDAO<User> {
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
 
-                // ps.setString(1, "Henok121212" );
-                // ps.setString(2, "Henok");
-                // ps.setString(3, "p2121212");
-                // ps.setString(4, "1222212");
-
                 ps.setString(1, user.getUser_id() );
                 ps.setString(2, user.getUser_name());
                 ps.setString(3, user.getPassword());
-                ps.setString(4, user.getRole_id());
+                ps.setInt(4, user.getRole_id());
 
                 ps.executeUpdate();
             }
@@ -91,12 +86,11 @@ public class UserDAO implements CrudDAO<User> {
                         user.setUser_id((rs.getString("user_id")));
                         user.setUser_name((rs.getString("user_name")));
                         user.setPassword((rs.getString("password")));
-                        user.setRole_id((rs.getString("role_id")));
+                        user.setRole_id((rs.getInt("role_id")));
 
                         return Optional.of(user);
                     }
                 }
-                return Optional.empty();
             }
             
         }catch (ClassNotFoundException e){
@@ -111,6 +105,7 @@ public class UserDAO implements CrudDAO<User> {
             throw new RuntimeException("Unable to access Database");
         }
 
+        return Optional.empty();
          
     }
     

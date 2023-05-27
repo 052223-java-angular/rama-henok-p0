@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class Role<Role> {
 
-    private String role_id;
+    private int role_id;
     private String role_name;
 
     

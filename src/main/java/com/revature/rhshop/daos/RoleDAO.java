@@ -60,7 +60,7 @@ public class RoleDAO  implements CrudDAO{
                     if(rs.next()){
                         Role role = new Role();
 
-                        role.setRole_id(rs.getString("role_id"));
+                        role.setRole_id(rs.getInt("role_id"));
                         role.setRole_name(rs.getString("role_name"));
                       
                         return Optional.of(role);

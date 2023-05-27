@@ -17,9 +17,9 @@ public class User {
     private String user_id;
     private String user_name;
     private String password;
-    private String role_id;
+    private int role_id;
 
-    public User(String user_name, String password, String role_id){
+    public User(String user_name, String password, int role_id){
         this.user_id = UUID.randomUUID().toString();
         this.user_name = user_name;
         this.password = password;
