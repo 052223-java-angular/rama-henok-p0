@@ -12,7 +12,7 @@ public class rhshopApp {
     Scanner scan = new Scanner(System.in);
     RouterService router = new RouterService();
 
-    // System.out.println(ConnectionFactory.getInstance().getConnection());
+    System.out.println(ConnectionFactory.getInstance().getConnection());
 
     router.navigate("/home", scan);
 

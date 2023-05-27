@@ -2,6 +2,7 @@ package com.revature.rhshop.services;
 
 import java.util.Scanner;
 
+import com.revature.rhshop.daos.RoleDAO;
 import com.revature.rhshop.daos.UserDAO;
 import com.revature.rhshop.screens.HomeScreen;
 import com.revature.rhshop.screens.RegisterScreen;
@@ -15,7 +16,7 @@ public class RouterService {
                 new HomeScreen(this).start(scan);  
             break;
 
-            case "login":
+            case "/login":
             break;
 
             case "/register":
@@ -32,6 +33,11 @@ public class RouterService {
     //we are creating this method because in "/register" RegisterScreen will be injected with many dependancies 
     //and instead of listing all new dependencies we will handle it in healper methods 
     private UserService getUserService(){
-        return new UserService(new UserDAO());
+        return new UserService(new UserDAO(), getRoleService());
     }
+    private RoleService getRoleService() {
+
+        return new RoleService(new RoleDAO());
+    }
+    
 }

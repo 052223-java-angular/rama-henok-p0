@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Role {
+public class Role<Role> {
 
     private String role_id;
     private String role_name;
