@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.revature.rhshop.models.Roles;
-import com.revature.rhshop.models.Users;
+import com.revature.rhshop.models.User;
 import com.revature.rhshop.utils.ConnectionFactory;
 
 public class RoleDAO implements CrudDAO<Roles> {
