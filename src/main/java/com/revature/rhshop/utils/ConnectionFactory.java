@@ -24,7 +24,7 @@ public class ConnectionFactory {
 
         Properties props = getProperties();
 
-        // System.out.println(props.getProperty("url") +  props.getProperty("username") + props.getProperty("password"));
+        System.out.println(props.getProperty("url") +  props.getProperty("username") + props.getProperty("password"));
 
         connection = DriverManager.getConnection(props.getProperty("url"), props.getProperty("username"), props.getProperty("password"));
 

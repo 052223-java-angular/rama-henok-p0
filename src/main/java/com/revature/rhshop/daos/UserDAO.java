@@ -18,28 +18,31 @@ public class UserDAO implements CrudDAO<User> {
         
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
-            String sql = "INSERT INTO users (id, user_name, password, role_id) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO users (user_id, user_name, password, role_id) VALUES (?, ?, ?, ?)";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
 
-                ps.setString(1, "Henok121212" );
-                ps.setString(2, "Henok");
-                ps.setString(3, "p2121212");
-                ps.setString(4, "1222212");
+                // ps.setString(1, "Henok121212" );
+                // ps.setString(2, "Henok");
+                // ps.setString(3, "p2121212");
+                // ps.setString(4, "1222212");
 
-                // ps.setString(1, user.getUser_id() );
-                // ps.setString(2, user.getUser_name());
-                // ps.setString(3, user.getPassword());
-                // ps.setString(4, user.getRole_id());
+                ps.setString(1, user.getUser_id() );
+                ps.setString(2, user.getUser_name());
+                ps.setString(3, user.getPassword());
+                ps.setString(4, user.getRole_id());
 
                 ps.executeUpdate();
             }
         }catch (ClassNotFoundException e){
+            e.printStackTrace();
             throw new RuntimeException("Unable to Find Class");
         }catch(IOException e){
+            e.printStackTrace();
             throw new RuntimeException("Unable to Run");
 
         }catch(SQLException e){
+            e.printStackTrace();
             throw new RuntimeException("Unable to access Database");
         }
     }
@@ -93,19 +96,22 @@ public class UserDAO implements CrudDAO<User> {
                         return Optional.of(user);
                     }
                 }
+                return Optional.empty();
             }
             
         }catch (ClassNotFoundException e){
+            e.printStackTrace();
             throw new RuntimeException("Unable to Find Class");
         }catch(IOException e){
+            e.printStackTrace();
             throw new RuntimeException("Unable to Run");
 
         }catch(SQLException e){
+            e.printStackTrace();
             throw new RuntimeException("Unable to access Database");
         }
 
-
-        return Optional.empty(); 
+         
     }
     
 }
