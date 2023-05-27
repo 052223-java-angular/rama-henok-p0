@@ -11,13 +11,14 @@ import java.util.Optional;
 import com.revature.rhshop.models.Role;
 import com.revature.rhshop.utils.ConnectionFactory;
 
-public class RoleDAO  implements CrudDAO{
+public class RoleDAO  implements CrudDAO<Role>{
 
     @Override
-    public void save(Object obj) {
+    public void save(Role obj) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
+    
 
     @Override
     public void update(String id) {
@@ -32,7 +33,7 @@ public class RoleDAO  implements CrudDAO{
     }
 
     @Override
-    public Object findById(String id) {
+    public Role findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
@@ -80,5 +81,6 @@ public class RoleDAO  implements CrudDAO{
 
         return Optional.empty(); 
     }
+
     
 }
