@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.revature.rhshop.screens.HomeScreen;
 import com.revature.rhshop.screens.RegisterScreen;
+import com.revature.rhshop.screens.LoginScreen;
 
 import com.revature.rhshop.daos.RoleDAO;
 import com.revature.rhshop.daos.UserDAO;
@@ -27,15 +28,26 @@ public class RouterService {
                 //this refers to the class itself(RouterService) because we injected RouterService dependency inside homescreen
                 new HomeScreen(this).start(scan);  
             break;
-            case "login":
+            
+            case "/login":
+                new LoginScreen(getUserService()).start(scan);
             break;
+            
             case "/register":
                 new RegisterScreen().start(scan);
             break;
+            
             default:
             break;
 
         }
+    }
+
+    /* ----------------- Helper Method ------------------------- */ 
+
+    private UserService getUserService(){
+
+        return new UserService(new UserDAO());
     }
     
 }

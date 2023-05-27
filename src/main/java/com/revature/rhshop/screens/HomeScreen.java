@@ -32,6 +32,7 @@ public class HomeScreen implements IScreen{
 
                 switch (input.toLowerCase()) {
                     case "1":
+                        router.navigate("/login", scan);
                         break;
                     case "2":
                         router.navigate("/register", scan);

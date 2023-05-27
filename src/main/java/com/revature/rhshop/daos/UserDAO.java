@@ -71,8 +71,9 @@ public class UserDAO implements CrudDAO<Users> {
      */
     public Optional<Users> findByUsername(String username) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "SELECT * FROM users WHERE username = ?";
-
+            String sql = "SELECT * FROM users WHERE user_name = ?";
+            
+            System.out.println("username is " + username);
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Set the username parameter for the prepared statement
                 ps.setString(1, username);
@@ -81,8 +82,10 @@ public class UserDAO implements CrudDAO<Users> {
                     if (rs.next()) {
                         // Create a new User object and populate it with data from the result set
                         Users user = new Users();
-                        user.setUserId(rs.getString("id"));
-                        user.setUsername(rs.getString("username"));
+                        String test = rs.getString("user_id");
+                        System.out.println("test is " + test);
+                        user.setUserId(rs.getString("user_id"));
+                        user.setUsername(rs.getString("user_name"));
                         user.setPassword(rs.getString("password"));
                         user.setRoleId(rs.getString("role_id"));
                         return Optional.of(user);
