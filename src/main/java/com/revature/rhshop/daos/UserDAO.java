@@ -11,10 +11,6 @@ import java.util.Optional;
 import com.revature.rhshop.models.User;
 import com.revature.rhshop.utils.ConnectionFactory;
 
-/**
- * The UserDAO class handles database operations for User objects.
- * It implements the CrudDAO interface.
- */
 public class UserDAO implements CrudDAO<User> {
 
     @Override
@@ -46,66 +42,71 @@ public class UserDAO implements CrudDAO<User> {
         }
     }
 
-
     @Override
     public void update(String id) {
+        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
     @Override
     public void delete(String id) {
+        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 
     @Override
     public User findById(String id) {
+        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 
     @Override
-    public List<User> findAll() {
+    public List findAll() {
+        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
-    /**
-     * Finds a user by their username.
-     *
-     * @param username the username of the user to find
-     * @return an Optional containing the User object if found, otherwise an empty
-     *         Optional
-     */
-    public Optional<User> findByUsername(String username) {
-        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+    public Optional<User> findByUsername(String username){
+       
+        //we use Optional because it will return empty user object rather than null object when there is no data in DB
+        // and returning null will result in NullPointerException
+        
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+
             String sql = "SELECT * FROM users WHERE user_name = ?";
-            
-            System.out.println("username is " + username);
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                // Set the username parameter for the prepared statement
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+
                 ps.setString(1, username);
 
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        // Create a new User object and populate it with data from the result set
+                try(ResultSet rs = ps.executeQuery()){
+                    if(rs.next()){
                         User user = new User();
-                        String test = rs.getString("user_id");
-                        System.out.println("test is " + test);
-                        user.setUser_id( rs.getString("user_id") );
-                        user.setUser_name(rs.getString("user_name"));
-                        user.setPassword(rs.getString("password"));
-                        user.setRole_id(rs.getInt("role_id"));
+
+                        user.setUser_id((rs.getString("user_id")));
+                        user.setUser_name((rs.getString("user_name")));
+                        user.setPassword((rs.getString("password")));
+                        user.setRole_id((rs.getInt("role_id")));
+
                         return Optional.of(user);
                     }
                 }
             }
+            
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Find Class");
+        }catch(IOException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Run");
 
-        } catch (SQLException e) {
-            throw new RuntimeException("Unable to connect to the database", e);
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties", e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load JDBC driver", e);
+        }catch(SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to access Database");
         }
 
         return Optional.empty();
+         
     }
+    
 }

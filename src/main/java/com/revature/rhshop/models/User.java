@@ -25,10 +25,6 @@ public class User {
         this.password = password;
         this.role_id = role_id;
     }
-
-    public User(String username, String password ) {
-        //this.user_id = UUID.randomUUID().toString();
-        this.user_name = username;
-        this.password = password;
-    }
+    
+    
 }

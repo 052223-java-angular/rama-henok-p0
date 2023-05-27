@@ -30,7 +30,7 @@ public class LoginScreen implements IScreen{
                 while(true) {
                     logger.info("Login RHshop!");
                     clearScreen();
-                    System.out.println("Login here!");
+                    System.out.println("Login here! (x to cancel)");
                     username = getUsername(scan);
                     logger.info("username " + username);
                     System.out.println("username3 " + username);
@@ -39,9 +39,9 @@ public class LoginScreen implements IScreen{
                         //logger.info("Leaving login screen");
                         break exit;
                     }
-                    System.out.println("get password");
+                    // System.out.println("get password");
 
-                    System.out.print("\nEnter your password:");
+                    System.out.print("\nEnter your password (x to cancel):");
                     System.out.flush();
                     //password = scan.nextLine();
                     //System.out.println("password1 " + password );

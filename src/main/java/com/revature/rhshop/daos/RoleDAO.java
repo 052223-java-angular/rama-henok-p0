@@ -8,17 +8,17 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-import com.revature.rhshop.models.Roles;
-import com.revature.rhshop.models.User;
+import com.revature.rhshop.models.Role;
 import com.revature.rhshop.utils.ConnectionFactory;
 
-public class RoleDAO implements CrudDAO<Roles> {
+public class RoleDAO  implements CrudDAO<Role>{
 
     @Override
-    public void save(Roles obj) {
+    public void save(Role obj) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
+    
 
     @Override
     public void update(String id) {
@@ -33,42 +33,54 @@ public class RoleDAO implements CrudDAO<Roles> {
     }
 
     @Override
-    public Roles findById(String id) {
+    public Role findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 
     @Override
-    public List<Roles> findAll() {
+    public List findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
-    public Optional<Roles> findByName(String name) {
-        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "SELECT * FROM roles WHERE name = ?";
+    public Optional<Role> findByRolename(String role_name){
+       
+        //we use Optional because it will return empty user object rather than null object when there is no data in DB
+        // and returning null will result in NullPointerException
+        
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, name);
+            String sql = "SELECT * FROM roles WHERE role_name = ?";
 
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        Roles role = new Roles();
-                        role.setRoleId(rs.getString("id"));
-                        role.setRoleName(rs.getString("name"));
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+
+                ps.setString(1, role_name);
+
+                try(ResultSet rs = ps.executeQuery()){
+                    if(rs.next()){
+                        Role role = new Role();
+
+                        role.setRole_id(rs.getInt("role_id"));
+                        role.setRole_name(rs.getString("role_name"));
+                      
                         return Optional.of(role);
                     }
                 }
             }
+            
+        }catch (ClassNotFoundException e){
+            throw new RuntimeException("Unable to Find Class");
+        }catch(IOException e){
+            throw new RuntimeException("Unable to Run");
 
-        } catch (SQLException e) {
-            throw new RuntimeException("Unable to connect to db");
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load jdbc");
+        }catch(SQLException e){
+            throw new RuntimeException("Unable to access Database");
         }
 
-        return Optional.empty();
+
+        return Optional.empty(); 
     }
+
+    
 }

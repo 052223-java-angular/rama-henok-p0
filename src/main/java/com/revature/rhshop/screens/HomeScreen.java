@@ -4,12 +4,12 @@ import java.util.Scanner;
 
 import com.revature.rhshop.services.RouterService;
 
+import lombok.AllArgsConstructor;
+
+//this annotation will create all argument constructor for the private RouterService
+@AllArgsConstructor 
 public class HomeScreen implements IScreen{
     private final RouterService router;
-
-    public HomeScreen (RouterService router){
-        this.router = router;
-    }
 
     @Override
     public void start(Scanner scan) {
@@ -22,8 +22,8 @@ public class HomeScreen implements IScreen{
 
                 System.out.print("\n\nWelcome to RH Shop!");
                 System.out.print("\n\n");
-                System.out.print("\n[1] Login Screen");
-                System.out.print("\n[2] Register Screen");
+                System.out.print("\n[1] Login ");
+                System.out.print("\n[2] Register    ");
                 System.out.print("\n[x] Exit");
 
                 
@@ -32,7 +32,7 @@ public class HomeScreen implements IScreen{
 
                 switch (input.toLowerCase()) {
                     case "1":
-                        router.navigate("/login", scan);
+                    router.navigate("/login", scan);
                         break;
                     case "2":
                         router.navigate("/register", scan);

@@ -1,6 +1,5 @@
 package com.revature.rhshop.models;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Roles {
-    private String roleId;
-    private String roleName;
+public class Role<T> {
+
+    private int role_id;
+    private String role_name;
+
+    
 }
