@@ -24,4 +24,9 @@ public class Session {
         this.id = user.getUser_id();
         this.username = user.getUser_name();
     }
+
+    public void clearSession() {
+        this.id = "";
+        this.username = "";
+    }
 }

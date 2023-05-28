@@ -21,7 +21,6 @@ public class RoleService {
             throw new RoleNotFoundException();
         }
 
-        
         return rolOpt.get();
 
     }
