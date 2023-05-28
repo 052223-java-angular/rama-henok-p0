@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Session {
+public class Session1 {
     private String id;
     private String username;
    
@@ -19,5 +19,10 @@ public class Session {
     public void setSession(User user) {
         this.id = user.getUser_id();
         this.username = user.getPassword();
+    }
+
+    public void clearSession() {
+        this.id = "";
+        this.username = "";
     }
 }

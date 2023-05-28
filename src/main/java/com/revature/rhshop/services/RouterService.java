@@ -4,10 +4,12 @@ import java.util.Scanner;
 
 import com.revature.rhshop.daos.RoleDAO;
 import com.revature.rhshop.daos.UserDAO;
+import com.revature.rhshop.daos.ProductDAO;
 import com.revature.rhshop.screens.HomeScreen;
 import com.revature.rhshop.screens.RegisterScreen;
 import com.revature.rhshop.screens.LoginScreen;
 import com.revature.rhshop.screens.MenuScreen;
+import com.revature.rhshop.screens.BrowsingScreen;
 import com.revature.rhshop.utils.Session;
 
 import lombok.AllArgsConstructor;
@@ -31,15 +33,15 @@ public class RouterService {
             break;
 
             case "/register":
-            new RegisterScreen(getUserService()).start(scan);
+                new RegisterScreen(getUserService()).start(scan);
             break;
 
             case "/menu":
-            new MenuScreen(session).start(scan);
+                new MenuScreen(this, session).start(scan);
             break;
 
             case "/browse":
-            // new BrowseScreen(getProductService()).start(scan);
+                new BrowsingScreen(getProductService(), this, session ).start(scan);
             break;
             
             default:
@@ -58,5 +60,13 @@ public class RouterService {
 
         return new RoleService(new RoleDAO());
     }
+
+    private ProductService getProductService() {
+
+        return new ProductService(new ProductDAO());
+    }
+
+   
+
     
 }

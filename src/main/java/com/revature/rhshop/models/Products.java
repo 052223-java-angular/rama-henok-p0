@@ -14,14 +14,18 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Products {
-    private int productId;
-    private String productName;
+    private int product_id;
+    private String product_name;
     private float price;
-    private int categoryId;
+    private int category_id;
+    private int stock;
+    
+    /* 
 
     public Products(String productName, float price, int categoryId) {
         this.productName = productName;
         this.price = price;
         this.categoryId = categoryId;
     }
+    */
 }

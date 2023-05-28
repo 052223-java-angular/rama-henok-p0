@@ -18,6 +18,7 @@ public class LoginScreen implements IScreen{
     private final UserService userService;
     private static final Logger logger = LogManager.getLogger(RegisterScreen.class);
     private Session session;
+    
         @Override
         public void start(Scanner scan) {
             String input = "";
