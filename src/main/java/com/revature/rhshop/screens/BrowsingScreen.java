@@ -43,42 +43,53 @@ public class BrowsingScreen implements IScreen{
 
                 // loop over productList and print each product
                 for (int i = 0; i < productList.size(); i++) {
-                Products product = productList.get(i);
-                // Assuming the Product class has a toString() method to print details of the product
-                int index = i+1;
-                System.out.println("ItemNum: " + index + " ProductName: "  + product.getProduct_name() + " Price: " + product.getPrice() + " Stock: " + product.getStock());
-
-            }
+                    Products product = productList.get(i);
+                    int index = i+1;
+                    System.out.println("ItemNum: " + index + " ProductName: "  + product.getProduct_name() + 
+                    " Price: $" + product.getPrice() + " In Stock: " + product.getStock() );
+                    System.out.println("");
+                }
                 
                 System.out.println("\n[x] Exit");
-                System.out.print("\nEnter Item Number: ");
+                //System.out.print("\nEnter Item Number: ");
                 input = scan.nextLine();
+
+                try {
+                    Integer.parseInt(input);
+
+                } catch (NumberFormatException e){
+                   if ( input.equals("x")){
+                        break exit;
+                   }
+                }
+
+                /*** 
                 
                 try{ 
                     int productIndex = Integer.parseInt(input) -1; 
                     if(productIndex >= 0 && productIndex < productList.size()){
                         Products product = productList.get(productIndex);
-                        System.out.println("You selected: " + product.getProduct_name());
+                        System.out.println("Product Details: " + product.getProduct_name());
+                        System.out.println("Enter x");
                         scan.nextLine();
-                        //router.navigate("/product", scan, productList.get(productIndex));
-                    }
-                else{
-                    logger.warn("Invalid option!");
-                    clearScreen();
-                }
-            }catch(NumberFormatException e){
-                switch (input) {
-                    case "x":
-                        logger.info("User signed out");
-                        break exit;
-                    default:
+                        //router.navigate("/browse", scan);
+                    } else{
                         logger.warn("Invalid option!");
                         clearScreen();
-                }
-            }
-        }
+                    }
+                }   catch(NumberFormatException e){
+                        switch (input) {
+                            case "x":
+                                logger.info("User signed out");
+                            break exit;
+                        default:
+                        logger.warn("Invalid option!");
+                        clearScreen();
+                    }
+                } **/
+            }//endwhile
                 
-        } 
+        } //endexit
     }
 
 
