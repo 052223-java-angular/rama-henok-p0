@@ -13,9 +13,10 @@ public class CartService {
 
     public CartItems findById(String cart_item_id){
 
-        // CartItems cartOptional = CartItemsDAO.findById(cart_item_id);
+        CartItems cartOpt = cartItemsDAO.findById(cart_item_id); 
+        System.out.println(cartOpt);
 
-        return null;
+        return cartOpt;
     }
 
     public int updateQuantity(String cart_item_id, int quantity){

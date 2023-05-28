@@ -45,8 +45,8 @@ public class CartScreen implements IScreen{
                             break;
                         }
                         int intValue = Integer.parseInt(newQuantity);
-                        cartService.updateQuantity("", intValue);
-                        
+                        cartService.updateQuantity("", intValue); 
+                        // cartService.findById();                      
 
                         //
                         break exit;

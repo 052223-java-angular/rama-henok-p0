@@ -3,8 +3,10 @@ package com.revature.rhshop.daos;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import com.revature.rhshop.models.CartItems;
 import com.revature.rhshop.utils.ConnectionFactory;
@@ -54,9 +56,45 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
     }
 
     @Override
-    public CartItems findById(String id) {
- 
+    public CartItems findById(String cart_item_id) {
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+
+            String sql = "SELECT * FROM cartitems WHERE cart_item_id = ?";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+
+                ps.setString(1, cart_item_id);
+
+                try(ResultSet rs = ps.executeQuery()){
+                    if(rs.next()){
+                        CartItems item = new CartItems();
+
+                        item.setProduct_name(rs.getString("product_name"));;
+                        item.setPrice(rs.getFloat("price"));
+                        item.setQuantity(rs.getInt("quantity"));
+                        item.setCart_id(rs.getInt("cart_id"));
+                        item.setProduct_id(rs.getInt("product_id"));
+                        return item;
+                    }
+                }
+            }
+            
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Find Class");
+        }catch(IOException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Run");
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to access Database");
+        }
+
         return null;
+
+        
     }
 
     @Override
