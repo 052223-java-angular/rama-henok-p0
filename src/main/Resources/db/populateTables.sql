@@ -60,7 +60,7 @@ insert into products (product_id, product_name, price, category_id ) values ('6'
 
 
 create table carts(
-cart_id int primary key,
+cart_id serial primary key,
 user_id VARCHAR,
 FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
@@ -69,7 +69,7 @@ insert into carts (cart_id, user_id) values ('39', '1');
 insert into carts (cart_id, user_id) values ('9', '2');
 
 create table cartitems(
-cart_item_id int primary key,
+cart_item_id serial primary key,
 product_name VARCHAR not null unique,
 price float not null,
 quantity int not null,
@@ -83,7 +83,7 @@ insert into cartitems (cart_item_id, product_name, price, quantity, cart_id, pro
 
 
 create table orders(
-order_id int primary key,
+order_id serial primary key,
 product_name Varchar,
 total_cost float not null,
 order_time timestamp,
@@ -94,7 +94,7 @@ insert into orders (order_id, product_name, total_cost, order_time, user_id) val
 
 
 create table orderitems(
-order_item_id int primary key,
+order_item_id serial primary key,
 quantity int not null,
 price float not null,
 order_id int,
