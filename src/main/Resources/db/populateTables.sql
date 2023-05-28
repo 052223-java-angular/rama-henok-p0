@@ -42,9 +42,11 @@ create table products(
 product_id serial primary key,
 product_name VARCHAR not null unique,
 price float not null,
+stock int not null,
 category_id int not null,
 FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
+
 
 
 insert into products (product_id, product_name, price, category_id ) values ('1', 'Nike Jacket', '144.99', '1');
@@ -116,15 +118,6 @@ FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 insert into reviews (review_id, rating, comment, order_time, product_id, user_id) values ('100', '2', 'This is cool eyeglass', '2023-05-27', '6', '2');
-
-
-
-
-
-
-
-
-
 
 
 

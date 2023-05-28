@@ -52,14 +52,14 @@ public class UserService {
         if (user.isEmpty()) {
             return Optional.empty();
         }
-        return user;
-       /* boolean isMatching = BCrypt.checkpw(password, user.get().getPassword());
-        if (isMatching) {
+        //return user;
+       boolean passwordMatch = BCrypt.checkpw(password, user.get().getPassword());
+        if (passwordMatch) {
             return user;
         }
         else {
             return Optional.empty();
-        } */
+        } 
     }
 
 

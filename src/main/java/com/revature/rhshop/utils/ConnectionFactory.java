@@ -16,13 +16,11 @@ public class ConnectionFactory {
     //designe pattern and we can only create one version of this connection and share it 
     private ConnectionFactory () throws IOException, ClassNotFoundException, SQLException{
         //this will check if the driver is installed
-        System.out.println("checking driver");
         Class.forName("org.postgresql.Driver");
-        System.out.println("got driver");
 
         Properties props = getProperties();
 
-        System.out.println("DB " + props.getProperty("url")  );
+        //System.out.println("DB " + props.getProperty("url")  );
 
         connection = DriverManager.getConnection(props.getProperty("url"), props.getProperty("username"), props.getProperty("password"));
 
@@ -34,9 +32,8 @@ public class ConnectionFactory {
     //because the above method is private nobody can reach it we created this method to check if instance of the singlton class is alrady 
     // exists or null(if exist return that instance instade of creating new one else if it is null create a new connection  )
     public static ConnectionFactory getInstance() throws ClassNotFoundException, IOException, SQLException {
-        System.out.println("get instance CF");
+        
         if(instance == null || instance.connection.isClosed()){
-            System.out.println("in looop");
             instance = new ConnectionFactory(); 
         }
         return instance;
@@ -53,7 +50,6 @@ public class ConnectionFactory {
         Properties props = new Properties();
 
         try(InputStream istream = getClass().getClassLoader().getResourceAsStream("application.properties")) {
-            System.out.println("get app properties");
 
             if(istream == null) {
                 throw new IOException("unable to find ");

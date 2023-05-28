@@ -6,10 +6,13 @@ import com.revature.rhshop.daos.CartItemsDAO;
 import com.revature.rhshop.daos.RoleDAO;
 import com.revature.rhshop.daos.UserDAO;
 import com.revature.rhshop.screens.CartScreen;
+import com.revature.rhshop.daos.ProductDAO;
+
 import com.revature.rhshop.screens.HomeScreen;
 import com.revature.rhshop.screens.RegisterScreen;
 import com.revature.rhshop.screens.LoginScreen;
 import com.revature.rhshop.screens.MenuScreen;
+import com.revature.rhshop.screens.BrowsingScreen;
 import com.revature.rhshop.utils.Session;
 
 import lombok.AllArgsConstructor;
@@ -36,17 +39,17 @@ public class RouterService {
                 new RegisterScreen(getUserService()).start(scan);
                 break;
 
-            case "/menu":
-                new MenuScreen(session).start(scan);
-                break;
-
-            case "/browse":
-                // new BrowseScreen(getProductService()).start(scan);
-                break;
-
             case "/cart":
                 new CartScreen(getRouterService(),getCartService()).start(scan);
                 break;
+
+            case "/menu":
+                new MenuScreen(this, session).start(scan);
+            break;
+
+            case "/browse":
+                new BrowsingScreen(getProductService(), this, session ).start(scan);
+            break;
             
             default:
                  break;
@@ -71,5 +74,13 @@ public class RouterService {
     private CartService getCartService(){
         return new CartService(new CartItemsDAO());
     }
+
+    private ProductService getProductService() {
+
+        return new ProductService(new ProductDAO());
+    }
+
+   
+
     
 }
