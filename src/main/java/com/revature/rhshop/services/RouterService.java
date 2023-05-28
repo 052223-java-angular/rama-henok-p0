@@ -2,8 +2,10 @@ package com.revature.rhshop.services;
 
 import java.util.Scanner;
 
+import com.revature.rhshop.daos.CartItemsDAO;
 import com.revature.rhshop.daos.RoleDAO;
 import com.revature.rhshop.daos.UserDAO;
+import com.revature.rhshop.screens.CartScreen;
 import com.revature.rhshop.screens.HomeScreen;
 import com.revature.rhshop.screens.RegisterScreen;
 import com.revature.rhshop.screens.LoginScreen;
@@ -41,6 +43,10 @@ public class RouterService {
             case "/browse":
                 // new BrowseScreen(getProductService()).start(scan);
                 break;
+
+            case "/cart":
+                new CartScreen(getRouterService(),getCartService()).start(scan);
+                break;
             
             default:
                  break;
@@ -57,6 +63,13 @@ public class RouterService {
     private RoleService getRoleService() {
 
         return new RoleService(new RoleDAO());
+    }
+    private RouterService getRouterService() {
+
+        return new RouterService(session);
+    }
+    private CartService getCartService(){
+        return new CartService(new CartItemsDAO());
     }
     
 }

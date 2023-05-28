@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class RoleService {
-    RoleDAO roleDAO = new RoleDAO();
+    private final RoleDAO roleDAO;
 
     public Role findByRolename(String role_name){
 
