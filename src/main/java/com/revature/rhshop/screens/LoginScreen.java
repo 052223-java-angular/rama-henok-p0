@@ -10,7 +10,6 @@ import com.revature.rhshop.services.RouterService;
 import com.revature.rhshop.services.UserService;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
-import org.mindrot.jbcrypt.BCrypt;
 
 @AllArgsConstructor
 public class LoginScreen implements IScreen{

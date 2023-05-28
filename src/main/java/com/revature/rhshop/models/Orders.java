@@ -1,6 +1,6 @@
 package com.revature.rhshop.models;
 
-import java.util.UUID;
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,17 +14,11 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Orders {
-    private int orderId;
-    private String productName;
-    private float totalCost;
-    private String orderTime;
-    private String userId;
+    private int order_id;
+    private String product_name;
+    private float total_cost;
+    private Date order_time;
+    private String user_id;
    
 
-    public Orders(String productName, float totalCost, String userId, String time) {
-        this.productName = productName;
-        this.totalCost = totalCost;
-        this.userId = userId;
-        this.orderTime = time;
-    }
 }

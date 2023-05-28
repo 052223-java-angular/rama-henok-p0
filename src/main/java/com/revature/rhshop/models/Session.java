@@ -15,9 +15,4 @@ public class Session {
     private String id;
     private String username;
    
-
-    public void setSession(User user) {
-        this.id = user.getUser_id();
-        this.username = user.getPassword();
-    }
 }

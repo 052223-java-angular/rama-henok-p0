@@ -31,19 +31,19 @@ public class RouterService {
             break;
 
             case "/register":
-            new RegisterScreen(getUserService()).start(scan);
-            break;
+                new RegisterScreen(getUserService()).start(scan);
+                break;
 
             case "/menu":
-            new MenuScreen(session).start(scan);
-            break;
+                new MenuScreen(session).start(scan);
+                break;
 
             case "/browse":
-            // new BrowseScreen(getProductService()).start(scan);
-            break;
+                // new BrowseScreen(getProductService()).start(scan);
+                break;
             
             default:
-            break;
+                 break;
 
         }
     }

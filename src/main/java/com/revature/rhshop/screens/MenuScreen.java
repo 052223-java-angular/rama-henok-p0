@@ -4,8 +4,6 @@ import java.util.Scanner;
 
 import com.revature.rhshop.utils.Session;
 
-import lombok.AllArgsConstructor;
-
 /**
  * The MenuScreen class represents the menu screen of the Yolp Application.
  * It implements the IScreen interface.
