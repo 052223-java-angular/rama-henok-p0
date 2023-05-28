@@ -33,7 +33,7 @@ public class LoginScreen implements IScreen{
                     System.out.println("Login here! (x to cancel)");
                     username = getUsername(scan);
                     logger.info("username " + username);
-                    System.out.println("username3 " + username);
+                    //System.out.println("You Entered " + username);
 
                     if (username.equals("x")) {
                         //logger.info("Leaving login screen");
@@ -43,9 +43,8 @@ public class LoginScreen implements IScreen{
 
                     System.out.print("\nEnter your password (x to cancel):");
                     System.out.flush();
-                    //password = scan.nextLine();
-                    //System.out.println("password1 " + password );
-                     password = getPassword(scan);
+                  
+                    password = getPassword(scan);
                     //logger.info("password " + password);
                     System.out.flush();
                         
