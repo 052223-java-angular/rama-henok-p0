@@ -9,6 +9,7 @@ import com.revature.rhshop.utils.ConnectionFactory;
 import com.revature.rhshop.utils.Session;
 
 
+
 public class rhshopApp {
   public static void main(String args[]) throws ClassNotFoundException, IOException, SQLException {
 
@@ -23,7 +24,8 @@ public class rhshopApp {
     router.navigate(("/cart"), scan);
    
     // System.out.println(ConnectionFactory.getInstance().getConnection());
-
+    
+    //router.navigate(("/cart"), scan);
     scan.close();
 
   }

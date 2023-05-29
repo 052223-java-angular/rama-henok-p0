@@ -1,5 +1,7 @@
 package com.revature.rhshop.models;
 
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +23,7 @@ public class CartItems {
 
     public CartItems(String product_name, float price, int quantity, int cart_id, int product_id )
     {
+        this.cart_item_id = UUID.randomUUID().toString();
         this.product_name = product_name;
         this.price = price;
         this.quantity = quantity;

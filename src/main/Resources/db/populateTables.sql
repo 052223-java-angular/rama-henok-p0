@@ -69,7 +69,7 @@ insert into carts (cart_id, user_id) values ('39', '1');
 insert into carts (cart_id, user_id) values ('9', '2');
 
 create table cartitems(
-cart_item_id Varchar primary key,
+cart_item_id serial primary key,
 product_name VARCHAR not null unique,
 price float not null,
 quantity int not null,
@@ -79,8 +79,18 @@ FOREIGN KEY (cart_id) REFERENCES carts(cart_id),
 FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
-insert into cartitems (cart_item_id, product_name, price, quantity, cart_id, product_id ) values ('69', 'Computer Eyeglass', '44', '39', '39', '6');
-insert into cartitems (cart_item_id, product_name, price, quantity, cart_id, product_id ) values ('19', 'Nike', '44', '39', '39', '1');
+create table cartitems(
+cart_item_id VARCHAR primary key,
+product_name VARCHAR not null unique,
+price float not null,
+quantity int not null,
+cart_id int,
+product_id int, 
+FOREIGN KEY (cart_id) REFERENCES carts(cart_id),
+FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+insert into cartitems (cart_item_id, product_name,  price, quantity, cart_id, product_id ) values ('69', 'Computer Eyeglass', '44', '39', '39', '6');
 
 
 create table orders(
