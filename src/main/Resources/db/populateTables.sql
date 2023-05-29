@@ -79,7 +79,18 @@ FOREIGN KEY (cart_id) REFERENCES carts(cart_id),
 FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
-insert into cartitems (cart_item_id, product_name, price, quantity, cart_id, product_id ) values ('69', 'Computer Eyeglass', '44', '39', '39', '6');
+create table cartitems(
+cart_item_id VARCHAR primary key,
+product_name VARCHAR not null unique,
+price float not null,
+quantity int not null,
+cart_id int,
+product_id int, 
+FOREIGN KEY (cart_id) REFERENCES carts(cart_id),
+FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+insert into cartitems (cart_item_id, product_name,  price, quantity, cart_id, product_id ) values ('69', 'Computer Eyeglass', '44', '39', '39', '6');
 
 
 create table orders(

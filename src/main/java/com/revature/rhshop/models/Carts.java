@@ -16,7 +16,6 @@ public class Carts {
     private int cart_id;
     private String user_id;
     
-
     public Carts(String user_id) {
         this.user_id = user_id;
     }
