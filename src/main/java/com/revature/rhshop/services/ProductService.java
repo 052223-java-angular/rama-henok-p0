@@ -22,6 +22,10 @@ public class ProductService {
     public List<String> getAllCategories() {
         return productDAO.getAllCategories();
     }
+
+    public List<Products> getByCategory(String category) {
+        return productDAO.findByCategory(category);
+    }
    
 
     
