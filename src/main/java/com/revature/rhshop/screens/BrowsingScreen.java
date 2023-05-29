@@ -1,10 +1,14 @@
 package com.revature.rhshop.screens;
 
+import com.revature.rhshop.models.CartItems;
+import com.revature.rhshop.models.Carts;
 import com.revature.rhshop.models.Products;
 import com.revature.rhshop.utils.Session;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
+
 import com.revature.rhshop.services.RouterService;
 import com.revature.rhshop.services.ProductService;
 import com.revature.rhshop.services.CartService;
@@ -49,7 +53,8 @@ public class BrowsingScreen implements IScreen{
                 Products product = productList.get(i);
                 // Assuming the Product class has a toString() method to print details of the product
                 int index = i+1;
-                System.out.println("ItemNum: " + index + " ProductName: "  + product.getProduct_name() + " Price: " + product.getPrice() + " Stock: " + product.getStock());
+                System.out.println("ItemNum: " + index + "      ProductName: "  + product.getProduct_name() + "       Price: " + 
+                product.getPrice() + "       Stock: " + product.getStock());
 
             }
                 
@@ -62,9 +67,25 @@ public class BrowsingScreen implements IScreen{
                     if(productIndex >= 0 && productIndex < productList.size()){
                         Products product = productList.get(productIndex);
                         System.out.println("You selected: " + product.getProduct_name());
-                        addToCart(product);
-                        System.out.println("Enter to commit and exit");
+                        //fix
+                        String productName = product.getProduct_name();
+                        String cart_item_id = searchCartByName(productName);
+                       
+                        if(!cart_item_id.equals("")){
+
+                            CartItems cartitem = this.cartService.findById(cart_item_id);
+                            int quantity = cartitem.getQuantity() + 1;
+
+                            this.cartService.updateQuantity(cart_item_id, quantity);
+                        }else{
+                        int quantity = 1;
+                        
+                        Carts cart = addToCart(product);
+
+                        System.out.println(addCartItem(product, quantity, cart.getCart_id()));
                         input = scan.nextLine();
+                        }
+
                     } else{
                         logger.warn("Invalid option!");
                         clearScreen();
@@ -89,11 +110,29 @@ public class BrowsingScreen implements IScreen{
     System.out.flush();
     }
 
-    private void addToCart(Products product ) {
-        this.cartService.addToCart(session.getId());
+    private Carts addToCart(Products product ) {
+        return this.cartService.addToCart(session.getId());
+    }
 
-        this.cartService.addToCartItems(session.getId(), product.getProduct_id(), product.getProduct_name(), 
-        product.getPrice(), product.getStock());
+    private String addCartItem(Products product, int quantity, int cart_id) {
+        CartItems cartItems = new CartItems();
+
+        cartItems.setCart_item_id(UUID.randomUUID().toString());
+        cartItems.setProduct_name(product.getProduct_name());
+        cartItems.setPrice(product.getPrice());
+        cartItems.setQuantity(quantity);
+        cartItems.setCart_id(cart_id);
+        cartItems.setProduct_id(product.getProduct_id());
+
+        cartService.addToCartItems(cartItems);
+
+        return "Added to cart successfully....";
+    }
+
+    private String searchCartByName(String product_name){
+
+        return this.cartService.findByProductName(product_name);
+        
     }
  
 }

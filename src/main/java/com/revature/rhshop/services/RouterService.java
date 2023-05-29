@@ -40,16 +40,16 @@ public class RouterService {
                 new RegisterScreen(getUserService()).start(scan);
                 break;
 
-            case "/cart":
-                new CartScreen(getRouterService(),getCartService()).start(scan);
-                break;
-
             case "/menu":
                 new MenuScreen(this, session).start(scan);
             break;
 
             case "/browse":
                 new BrowsingScreen(getProductService(), this, session, getCartService() ).start(scan);
+            break;
+
+            case "/cart":
+            new CartScreen(getRouterService(),getCartService()).start(scan);
             break;
             
             default:
