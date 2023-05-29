@@ -30,7 +30,7 @@ insert into users (user_id, user_name, password, role_id ) values ('2', 'Puma Jo
 
 
 create table categories(
-category_id int primary key,
+category_id VARCHAR primary key,
 category_name VARCHAR
 );
 
