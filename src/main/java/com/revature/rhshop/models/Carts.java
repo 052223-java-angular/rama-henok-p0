@@ -1,7 +1,5 @@
 package com.revature.rhshop.models;
 
-import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,11 +13,10 @@ import lombok.ToString;
 @ToString
 
 public class Carts {
-    private int cartId;
-    private String userId;
+    private int cart_id;
+    private String user_id;
     
-
-    public Carts(String userId) {
-        this.userId = userId;
+    public Carts(String user_id) {
+        this.user_id = user_id;
     }
 }

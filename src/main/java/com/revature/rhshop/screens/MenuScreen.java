@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
  * The MenuScreen class represents the menu screen of the Yolp Application.
  * It implements the IScreen interface.
  */
+@AllArgsConstructor
 public class MenuScreen implements IScreen {
    
     private Session session;
@@ -54,7 +55,7 @@ public class MenuScreen implements IScreen {
                 switch (input.toLowerCase()) {
                     case "1":
                         logger.info("Navigating to Shopping Cart");
-                        //routerService.navigate("/shopping_cart", scan);
+                        routerService.navigate(("/cart"), scan);
                         break;
                     
                     case "2":

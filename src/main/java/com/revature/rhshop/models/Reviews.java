@@ -12,9 +12,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Reviews {
-    private String reviewId;
+    private int review_id;
     private int rating;
     private String comment;
-    private String userId;
-    private int productId;
+    private String user_id;
+    private int product_id;
 }

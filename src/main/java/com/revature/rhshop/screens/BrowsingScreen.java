@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 import com.revature.rhshop.services.RouterService;
 import com.revature.rhshop.services.ProductService;
+import com.revature.rhshop.services.CartService;
 import org.apache.logging.log4j.LogManager;
 
 //import com.revature.rhshop.services.ProductService;
@@ -18,12 +19,14 @@ public class BrowsingScreen implements IScreen{
     private final ProductService productService;
     private Session session;
     RouterService router;
+    private final CartService cartService;
     
     
-    public BrowsingScreen(ProductService productService, RouterService routerService, Session session) {
+    public BrowsingScreen(ProductService productService, RouterService routerService, Session session, CartService cartService) {
         this.productService = productService;
         this.router = routerService;
         this.session = session;
+        this.cartService = cartService;
     }
 
 
@@ -51,7 +54,7 @@ public class BrowsingScreen implements IScreen{
             }
                 
                 System.out.println("\n[x] Exit");
-                System.out.print("\nEnter Item Number: ");
+                System.out.print("\nAdd To Cart- Enter Item Number: ");
                 input = scan.nextLine();
                 
                 try{ 
@@ -59,32 +62,38 @@ public class BrowsingScreen implements IScreen{
                     if(productIndex >= 0 && productIndex < productList.size()){
                         Products product = productList.get(productIndex);
                         System.out.println("You selected: " + product.getProduct_name());
-                        scan.nextLine();
-                        //router.navigate("/product", scan, productList.get(productIndex));
-                    }
-                else{
-                    logger.warn("Invalid option!");
-                    clearScreen();
-                }
-            }catch(NumberFormatException e){
-                switch (input) {
-                    case "x":
-                        logger.info("User signed out");
-                        break exit;
-                    default:
+                        addToCart(product);
+                        System.out.println("Enter to commit and exit");
+                        input = scan.nextLine();
+                    } else{
                         logger.warn("Invalid option!");
                         clearScreen();
+                    }
+                } catch(NumberFormatException e){
+                    switch (input) {
+                        case "x":
+                            logger.info("User signed out");
+                            break exit;
+                        default:
+                            logger.warn("Invalid option!");
+                            clearScreen();
+                     }
                 }
             }
-        }
                 
         } 
     }
 
-
     private void clearScreen() {
     System.out.print("\033[H\033[2J");
     System.out.flush();
+    }
+
+    private void addToCart(Products product ) {
+        this.cartService.addToCart(session.getId());
+
+        this.cartService.addToCartItems(session.getId(), product.getProduct_id(), product.getProduct_name(), 
+        product.getPrice(), product.getStock());
     }
  
 }

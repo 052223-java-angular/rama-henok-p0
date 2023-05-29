@@ -47,7 +47,8 @@ public class RegisterScreen implements IScreen {
                 String confirmation = scan.nextLine();
                 switch(confirmation.toLowerCase()){
                     case "y":
-                        User createdUser = userService.Register(username, password);
+                        // User createdUser = userService.Register(username, password);
+                        userService.Register(username, password);
                         break exit;
                     case "n":
                         ClearScreen();
@@ -62,9 +63,6 @@ public class RegisterScreen implements IScreen {
                         scan.nextLine();
                         break;
                 }
-
-
-
 
                 //breakout if everything is correct else go to xit and repeat till correct
                 break exit;

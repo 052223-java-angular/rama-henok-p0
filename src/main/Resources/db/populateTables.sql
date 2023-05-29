@@ -1,18 +1,4 @@
-drop table if exists users cascade;
-drop table if exists orders cascade;
-drop table if exists products cascade;
-drop table if exists reviews cascade;
-
-create table users(
-user_id VARCHAR primary key,
-user_name VARCHAR(50) not null unique,
-password VARCHAR(50) not null,
-role_id Integer default 1
-);
-
-
-
-drop table if exists roles cascade;
+	drop table if exists roles cascade;
     drop table if exists users  cascade;
     drop table if exists categories cascade;
 	drop table if exists products cascade;
@@ -56,9 +42,11 @@ create table products(
 product_id serial primary key,
 product_name VARCHAR not null unique,
 price float not null,
+stock int not null,
 category_id int not null,
 FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
+
 
 
 insert into products (product_id, product_name, price, category_id ) values ('1', 'Nike Jacket', '144.99', '1');
@@ -72,7 +60,7 @@ insert into products (product_id, product_name, price, category_id ) values ('6'
 
 
 create table carts(
-cart_id int primary key,
+cart_id serial primary key,
 user_id VARCHAR,
 FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
@@ -81,7 +69,7 @@ insert into carts (cart_id, user_id) values ('39', '1');
 insert into carts (cart_id, user_id) values ('9', '2');
 
 create table cartitems(
-cart_item_id int primary key,
+cart_item_id serial primary key,
 product_name VARCHAR not null unique,
 price float not null,
 quantity int not null,
@@ -91,11 +79,22 @@ FOREIGN KEY (cart_id) REFERENCES carts(cart_id),
 FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
-insert into cartitems (cart_item_id, product_name, price, quantity, cart_id, product_id ) values ('69', 'Computer Eyeglass', '44', '39', '39', '6');
+create table cartitems(
+cart_item_id VARCHAR primary key,
+product_name VARCHAR not null unique,
+price float not null,
+quantity int not null,
+cart_id int,
+product_id int, 
+FOREIGN KEY (cart_id) REFERENCES carts(cart_id),
+FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+insert into cartitems (cart_item_id, product_name,  price, quantity, cart_id, product_id ) values ('69', 'Computer Eyeglass', '44', '39', '39', '6');
 
 
 create table orders(
-order_id int primary key,
+order_id serial primary key,
 product_name Varchar,
 total_cost float not null,
 order_time timestamp,
@@ -106,7 +105,7 @@ insert into orders (order_id, product_name, total_cost, order_time, user_id) val
 
 
 create table orderitems(
-order_item_id int primary key,
+order_item_id serial primary key,
 quantity int not null,
 price float not null,
 order_id int,
@@ -130,68 +129,6 @@ FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 insert into reviews (review_id, rating, comment, order_time, product_id, user_id) values ('100', '2', 'This is cool eyeglass', '2023-05-27', '6', '2');
-
-//**********************************************************************************
-This to handle categories and products
- drop table if exists categories cascade;
-	drop table if exists products cascade;
-
-create table categories(
-category_id int primary key,
-category_name VARCHAR
-);
-
-insert into categories (category_id, category_name) values ('1', 'CLOTHING');
-insert into categories (category_id, category_name) values ('2', 'ELECTRONICS');
-insert into categories (category_id, category_name) values ('3', 'EYEGLASS');
-
-
-create table products( product_id serial primary key, product_name VARCHAR not null unique, price float not null, stock int not null, category_id int not null,
-FOREIGN KEY (category_id) REFERENCES categories(category_id) );
-
- 
-
- 
-
-insert into products (product_id, product_name, price, stock, category_id ) values ('1', 'Nike Jacket', '144.99', '10', '1');
-insert into products (product_id, product_name, price, stock, category_id ) values ('2', 'Puma Joggers', '14.99', '12', '1');
-insert into products (product_id, product_name, price, stock, category_id ) values ('3', 'Iphone 14 Pro Max', '1299.99','34' ,'2');
-insert into products (product_id, product_name, price, stock, category_id ) values ('4', 'Dell XPS 15', '2499.99', '90', '2');
-insert into products (product_id, product_name, price, stock, category_id ) values ('5', 'RayBan Eyeglass', '120.99','10', '3');
-insert into products (product_id, product_name, price, stock, category_id ) values ('6', 'Computer Eyeglass', '44','2', '3');
-
- 
-
- 
-
- 
-
-insert into products (product_id, product_name, price, stock, category_id ) values ('1', 'Nike Jacket', '144.99', '10', '1');
-
-insert into products (product_id, product_name, price, stock, category_id ) values ('2', 'Puma Joggers', '14.99', '12', '1');
-
- 
-
-insert into products (product_id, product_name, price, stock, category_id ) values ('3', 'Iphone 14 Pro Max', '1299.99','34' ,'2');
-
-insert into products (product_id, product_name, price, stock, category_id ) values ('4', 'Dell XPS 15', '2499.99', '90', '2');
-
- 
-
-insert into products (product_id, product_name, price, stock, category_id ) values ('5', 'RayBan Eyeglass', '120.99','10', '3');
-
-insert into products (product_id, product_name, price, stock, category_id ) values ('6', 'Computer Eyeglass', '44','2', '3');
-
- 
-
-insert into products (product_id, product_name, price, category_id ) values ('1', 'Nike Jacket', '144.99', '1');
-insert into products (product_id, product_name, price, category_id ) values ('2', 'Puma Joggers', '14.99', '1');
-
-insert into products (product_id, product_name, price, category_id ) values ('3', 'Iphone 14 Pro Max', '1299.99', '2');
-insert into products (product_id, product_name, price, category_id ) values ('4', 'Dell XPS 15', '2499.99', '2');
-
-insert into products (product_id, product_name, price, category_id ) values ('5', 'RayBan Eyeglass', '120.99', '3');
-insert into products (product_id, product_name, price, category_id ) values ('6', 'Computer Eyeglass', '44', '3')
 
 
 
