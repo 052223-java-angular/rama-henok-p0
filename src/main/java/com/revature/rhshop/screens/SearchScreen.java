@@ -46,7 +46,9 @@ public class SearchScreen implements IScreen {
 
         exit: {
             while (true) {
-                clearScreen();
+                //clearScreen();
+                System.out.println("Welcome To Product Search Screen, " + session.getUsername() + "!");
+
                 System.out.println("\n[1] Search By Product Name");
                 System.out.println("\n[2] Search By Product Cateory");
                 System.out.println("\n[3] Search By Product Price");
@@ -62,7 +64,7 @@ public class SearchScreen implements IScreen {
                         break;
                        
                     case "2":
-                        //categorySearch(scan, input);
+                        categorySearch(scan, input);
                         break;
                     
                     case "3":
@@ -139,7 +141,55 @@ public class SearchScreen implements IScreen {
 
             }
         }
-       
+    }
+
+    public void categorySearch(Scanner scan, String input){
+
+        List<String> categoryList = productService.getAllCategories();
+    
+        while(true){
+            //clearScreen();
+            System.out.println("Searching by Product Category ");
+    
+            System.out.println("Product Categories: \n");
+            for(int i = 0; i < categoryList.size(); i++){
+                System.out.println("[" + (i+1) + "] " + categoryList.get(i));
+            }
+            System.out.println("\nEnter Product Category:  ");
+            System.out.println("x to go back <- ");
+            input = scan.nextLine().trim();
+    
+            if(input.equalsIgnoreCase("x")){
+                break;
+            }
+            else if(input.isEmpty()){
+                //clearScreen();
+                System.out.println("Invalid product category, please enter a valid product category.");
+                System.out.println("Press Enter to try again.");
+                scan.nextLine();
+                continue;
+            }
+            
+            List<Products> products = productService.getByCategory(input);
+            if(products.isEmpty()){
+                System.out.println("No products found with that category, search again: ");
+                continue;
+            }
+            else{
+                //clearScreen();
+                System.out.println("\nProduct found:");
+                System.out.println("Enter x to go back: \n");
+                
+                for(int i = 0; i < products.size(); i++){   
+                    Products product = products.get(i);
+                    System.out.println( i+1 + ") " +  " Category: " + product.getCategory_name() + " ProductName: " + 
+                    product.getProduct_name() + " Price: " + product.getPrice() + " Stock: " +  product.getStock() );
+                    System.out.println("");
+                    //System.out.println("-------------------------------------------------------------------------------");
+                  
+                }  
+            }       
+        }
     }
 
     
@@ -147,7 +197,7 @@ public class SearchScreen implements IScreen {
 
 
 
-}
+}//EndOfClass
 
 
 

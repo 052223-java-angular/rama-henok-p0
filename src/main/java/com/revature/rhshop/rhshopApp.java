@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import com.revature.rhshop.services.RouterService;
-import com.revature.rhshop.utils.ConnectionFactory;
+//import com.revature.rhshop.utils.ConnectionFactory;
 import com.revature.rhshop.utils.Session;
 
 
@@ -26,8 +26,6 @@ public class rhshopApp {
     // router.navigate(("/cart"), scan);
    
     // System.out.println(ConnectionFactory.getInstance().getConnection());
-    
-    //router.navigate(("/cart"), scan);
     scan.close();
 
   }

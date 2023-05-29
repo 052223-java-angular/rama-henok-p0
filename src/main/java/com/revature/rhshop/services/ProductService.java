@@ -28,6 +28,9 @@ public class ProductService {
 
         return productDAO.findProductId(product_id);
     }
+    public List<Products> getByCategory(String category) {
+        return productDAO.findByCategory(category);
+    }
    
 
     
