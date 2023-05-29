@@ -22,7 +22,12 @@ public class ProductDAO implements CrudDAO<Products> {
             try(ResultSet rs = s.executeQuery("select * from products")) {
                 while(rs.next()) {
                     Products product = 
-                    new Products(rs.getInt("product_id"), rs.getString("product_name"),  rs.getFloat("price"), rs.getInt("stock"), rs.getString("category_name"));
+                    new Products(
+                        rs.getInt("product_id"), 
+                        rs.getString("product_name"),  
+                        rs.getFloat("price"), 
+                        rs.getInt("stock"), 
+                        rs.getString("category_name"));
                     productList.add(product);
                 }
             }
@@ -123,6 +128,45 @@ public class ProductDAO implements CrudDAO<Products> {
         return categoriesList;
     }
 
+    public Products findProductId(int product_id) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+
+            String sql = "SELECT * FROM products WHERE product_id = ?";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+
+                ps.setInt(1, product_id);
+
+                try(ResultSet rs = ps.executeQuery()){
+                    if(rs.next()){
+                        Products item = new Products();
+
+                        item.setProduct_id(rs.getInt("product_id"));
+                        item.setProduct_name(rs.getString("product_name"));
+                        item.setPrice(rs.getFloat("price"));
+                        item.setStock(rs.getInt("stock"));
+                        item.setCategory_name(rs.getString("category_name"));
+                        return item;
+                    }
+                }
+            }
+            
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Find Class");
+        }catch(IOException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Run");
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to access Database");
+        }
+
+        return null;
+
+    }
+
     public List<Products> findByCategory(String category_name) {
         List<Products> productList = new ArrayList<Products>();
        
@@ -157,14 +201,6 @@ public class ProductDAO implements CrudDAO<Products> {
 
         return productList;
     }
-
-
-
-    
-
-
-
-    
 
 }//endOfClass
 

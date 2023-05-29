@@ -16,6 +16,6 @@ public class Products {
     private String product_name;
     private float price;
     private int stock;
-    private String category_name; // Should refer to category table
+    private String category_name;
 
 }

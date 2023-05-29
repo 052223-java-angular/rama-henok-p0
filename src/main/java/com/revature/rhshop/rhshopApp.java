@@ -21,6 +21,10 @@ public class rhshopApp {
     // Navigate to the "/home" route using the router and scanner
     router.navigate("/home", scan);
 
+    // System.out.println(Session);
+
+    // router.navigate(("/cart"), scan);
+   
     // System.out.println(ConnectionFactory.getInstance().getConnection());
     scan.close();
 

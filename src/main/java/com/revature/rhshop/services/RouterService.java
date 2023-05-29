@@ -56,7 +56,7 @@ public class RouterService {
 
 
             case "/cart":
-            new CartScreen(getRouterService(),getCartService()).start(scan);
+            new CartScreen(getRouterService(),getCartService(), session, getProductService()).start(scan);
             break;
             
             default:
@@ -75,6 +75,7 @@ public class RouterService {
 
         return new RoleService(new RoleDAO());
     }
+
     private RouterService getRouterService() {
 
         return new RouterService(session);

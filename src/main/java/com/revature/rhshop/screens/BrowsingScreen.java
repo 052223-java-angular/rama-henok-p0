@@ -67,6 +67,7 @@ public class BrowsingScreen implements IScreen{
                     if(productIndex >= 0 && productIndex < productList.size()){
                         Products product = productList.get(productIndex);
                         System.out.println("You selected: " + product.getProduct_name());
+                       
                         //fix
                         String productName = product.getProduct_name();
                         String cart_item_id = searchCartByName(productName);

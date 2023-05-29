@@ -46,6 +46,7 @@ public class MenuScreen implements IScreen {
         exit: {
             while (true) {
                 clearScreen();
+                System.out.println("Welcome to the Menu screen, " + session.getUsername() + " !");
                 System.out.println("\n[1] Shopping Cart");
                 System.out.println("\n[2] Browse Products");
                 System.out.println("\n[3] Search Products");
