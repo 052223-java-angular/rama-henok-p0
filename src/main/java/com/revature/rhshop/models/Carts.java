@@ -11,7 +11,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-
 public class Carts {
     private int cart_id;
     private String user_id;

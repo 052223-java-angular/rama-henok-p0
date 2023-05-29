@@ -30,7 +30,7 @@ insert into users (user_id, user_name, password, role_id ) values ('2', 'Puma Jo
 
 
 create table categories(
-category_id int primary key,
+category_id VARCHAR primary key,
 category_name VARCHAR
 );
 
@@ -43,20 +43,18 @@ product_id serial primary key,
 product_name VARCHAR not null unique,
 price float not null,
 stock int not null,
-category_id int not null,
-FOREIGN KEY (category_id) REFERENCES categories(category_id)
-);
+category_name VARCHAR not null  );
 
 
 
-insert into products (product_id, product_name, price, category_id ) values ('1', 'Nike Jacket', '144.99', '1');
-insert into products (product_id, product_name, price, category_id ) values ('2', 'Puma Joggers', '14.99', '1');
+insert into products (product_id, product_name, price, stock, category_name ) values ('1', 'Nike Jacket', '144.99', '55', 'CLOTHING');
+insert into products (product_id, product_name, price, stock, category_name ) values ('2', 'Puma Joggers', '14.99', '109', 'CLOTHING');
 
-insert into products (product_id, product_name, price, category_id ) values ('3', 'Iphone 14 Pro Max', '1299.99', '2');
-insert into products (product_id, product_name, price, category_id ) values ('4', 'Dell XPS 15', '2499.99', '2');
+insert into products (product_id, product_name, price, stock, category_name ) values ('3', 'Iphone 14 Pro Max', '1299.99', '100', 'ELECTRONICS');
+insert into products (product_id, product_name, price, stock, category_name ) values ('4', 'Dell XPS 15', '2499.99', '12', 'ELECTRONICS');
 
-insert into products (product_id, product_name, price, category_id ) values ('5', 'RayBan Eyeglass', '120.99', '3');
-insert into products (product_id, product_name, price, category_id ) values ('6', 'Computer Eyeglass', '44', '3');
+insert into products (product_id, product_name, price, stock, category_name ) values ('5', 'RayBan Eyeglass', '120.99', '39', 'EYEGLASS');
+insert into products (product_id, product_name, price, stock, category_name ) values ('6', 'Computer Eyeglass', '44', '188', 'EYEGLASS');
 
 
 create table carts(
@@ -67,17 +65,6 @@ FOREIGN KEY (user_id) REFERENCES users(user_id)
 
 insert into carts (cart_id, user_id) values ('39', '1');
 insert into carts (cart_id, user_id) values ('9', '2');
-
-create table cartitems(
-cart_item_id serial primary key,
-product_name VARCHAR not null unique,
-price float not null,
-quantity int not null,
-cart_id int,
-product_id int, 
-FOREIGN KEY (cart_id) REFERENCES carts(cart_id),
-FOREIGN KEY (product_id) REFERENCES products(product_id)
-);
 
 create table cartitems(
 cart_item_id VARCHAR primary key,
