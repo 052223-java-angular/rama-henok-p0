@@ -18,9 +18,9 @@ public class rhshopApp {
     RouterService router = new RouterService(new Session());
 
     // Navigate to the "/home" route using the router and scanner
-    router.navigate("/home", scan);
+    // router.navigate("/home", scan);
 
-    // router.navigate(("/cart"), scan);
+    router.navigate(("/cart"), scan);
    
     // System.out.println(ConnectionFactory.getInstance().getConnection());
 

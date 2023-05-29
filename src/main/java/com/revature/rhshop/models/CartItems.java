@@ -12,7 +12,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CartItems {
-    private int cart_item_id;
+    private String cart_item_id;
     private String product_name;
     private float price;
     private int quantity;

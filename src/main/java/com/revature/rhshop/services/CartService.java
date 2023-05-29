@@ -1,6 +1,6 @@
 package com.revature.rhshop.services;
 
-import java.util.Optional;
+import java.util.List;
 
 import com.revature.rhshop.daos.CartItemsDAO;
 import com.revature.rhshop.models.CartItems;
@@ -23,6 +23,20 @@ public class CartService {
 
         return cartItemsDAO.updateQuantity(cart_item_id, quantity);
 
+    }
+
+    public boolean delete(String cart_item_id) {
+
+        return cartItemsDAO.deleteById(cart_item_id);
+
+    }
+
+    public List<CartItems> findAll() {
+        
+        
+        List<CartItems> l = cartItemsDAO.findAll();
+        
+        return cartItemsDAO.findAll();
     }
 
 
