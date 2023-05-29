@@ -50,13 +50,13 @@ public class BrowsingScreen implements IScreen{
 
                 // loop over productList and print each product
                 for (int i = 0; i < productList.size(); i++) {
-                Products product = productList.get(i);
-                // Assuming the Product class has a toString() method to print details of the product
-                int index = i+1;
-                System.out.println("ItemNum: " + index + "      ProductName: "  + product.getProduct_name() + "       Price: " + 
-                product.getPrice() + "       Stock: " + product.getStock());
+                    Products product = productList.get(i);
+                    // Assuming the Product class has a toString() method to print details of the product
+                    int index = i+1;
+                    System.out.println("ItemNum: " + index + "      ProductName: "  + product.getProduct_name() + "       Price: " + 
+                    product.getPrice() + "       Stock: " + product.getStock());
 
-            }
+                }
                 
                 System.out.println("\n[x] Exit");
                 System.out.print("\nAdd To Cart- Enter Item Number: ");
@@ -67,6 +67,7 @@ public class BrowsingScreen implements IScreen{
                     if(productIndex >= 0 && productIndex < productList.size()){
                         Products product = productList.get(productIndex);
                         System.out.println("You selected: " + product.getProduct_name());
+                       
                         //fix
                         String productName = product.getProduct_name();
                         String cart_item_id = searchCartByName(productName);

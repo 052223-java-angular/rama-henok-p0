@@ -43,20 +43,18 @@ product_id serial primary key,
 product_name VARCHAR not null unique,
 price float not null,
 stock int not null,
-category_id int not null,
-FOREIGN KEY (category_id) REFERENCES categories(category_id)
-);
+category_name VARCHAR not null  );
 
 
 
-insert into products (product_id, product_name, price, stock, category_id ) values ('1', 'Nike Jacket', '144.99', '55', '1');
-insert into products (product_id, product_name, price, stock, category_id ) values ('2', 'Puma Joggers', '14.99', '109', '1');
+insert into products (product_id, product_name, price, stock, category_name ) values ('1', 'Nike Jacket', '144.99', '55', 'CLOTHING');
+insert into products (product_id, product_name, price, stock, category_name ) values ('2', 'Puma Joggers', '14.99', '109', 'CLOTHING');
 
-insert into products (product_id, product_name, price, stock, category_id ) values ('3', 'Iphone 14 Pro Max', '1299.99', '100', '2');
-insert into products (product_id, product_name, price, stock, category_id ) values ('4', 'Dell XPS 15', '2499.99', '12', '2');
+insert into products (product_id, product_name, price, stock, category_name ) values ('3', 'Iphone 14 Pro Max', '1299.99', '100', 'ELECTRONICS');
+insert into products (product_id, product_name, price, stock, category_name ) values ('4', 'Dell XPS 15', '2499.99', '12', 'ELECTRONICS');
 
-insert into products (product_id, product_name, price, stock, category_id ) values ('5', 'RayBan Eyeglass', '120.99', '39', '3');
-insert into products (product_id, product_name, price, stock, category_id ) values ('6', 'Computer Eyeglass', '44', '188', '3');
+insert into products (product_id, product_name, price, stock, category_name ) values ('5', 'RayBan Eyeglass', '120.99', '39', 'EYEGLASS');
+insert into products (product_id, product_name, price, stock, category_name ) values ('6', 'Computer Eyeglass', '44', '188', 'EYEGLASS');
 
 
 create table carts(

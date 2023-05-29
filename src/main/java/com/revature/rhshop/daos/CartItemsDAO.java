@@ -243,5 +243,38 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
         }
 
     }
+
+
+    public double priceCalculator() {
+        double total = 0.00;
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+
+            //AS total refers to an alias which is used to store the calculated result of the sql statment
+            String sql = "SELECT SUM(quantity * price) AS total FROM cartitems";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+
+                try(ResultSet rs = ps.executeQuery()){
+                    if (rs.next()) {
+                        total = rs.getFloat("total");
+            }
+
+                    return total;
+                }
+            }
+            
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Find Class");
+        }catch(IOException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Run");
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to access Database");
+        }
+    }
      
 }

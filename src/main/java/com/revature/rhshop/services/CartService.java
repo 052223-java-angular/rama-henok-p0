@@ -56,6 +56,13 @@ public class CartService {
        cartItemsDAO.save(cartItems);
     }
 
+    public double totalPriceCalculator() {
+
+        return cartItemsDAO.priceCalculator();
+
+    
+    }
+
    
 
 
