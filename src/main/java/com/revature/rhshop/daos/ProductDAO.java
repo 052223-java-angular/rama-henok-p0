@@ -22,7 +22,7 @@ public class ProductDAO implements CrudDAO<Products> {
             try(ResultSet rs = s.executeQuery("select * from products")) {
                 while(rs.next()) {
                     Products product = 
-                    new Products(rs.getInt("product_id"), rs.getString("product_name"),  rs.getInt("category_id"), rs.getInt("price"), rs.getInt("stock"));
+                    new Products(rs.getInt("product_id"), rs.getString("product_name"),  rs.getFloat("price"), rs.getInt("stock"), rs.getInt("category_id"));
                     productList.add(product);
                 }
             }

@@ -38,7 +38,7 @@ public class HomeScreen implements IScreen{
                         router.navigate("/register", scan);
                         break;
                     case "x":
-                        System.out.print("\nExit Successful.....Goodbye!");
+                        System.out.print("\n.....Exit Successful Goodbye!.......");
                         break exit;
                     default:
                         ClearScreen();

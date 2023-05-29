@@ -19,7 +19,7 @@ public class CartDAO  implements CrudDAO<Carts> {
 
             String sql = "insert into carts( cart_id, user_id ) values (default, ?)";
 
-            System.out.println("ps " + item.getUser_id());
+            //System.out.println("ps " + item.getUser_id());
 
             try(PreparedStatement ps = conn.prepareStatement( sql )){
                 ps.setString(1, item.getUser_id() );
