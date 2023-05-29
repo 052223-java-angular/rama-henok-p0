@@ -69,17 +69,6 @@ insert into carts (cart_id, user_id) values ('39', '1');
 insert into carts (cart_id, user_id) values ('9', '2');
 
 create table cartitems(
-cart_item_id serial primary key,
-product_name VARCHAR not null unique,
-price float not null,
-quantity int not null,
-cart_id int,
-product_id int, 
-FOREIGN KEY (cart_id) REFERENCES carts(cart_id),
-FOREIGN KEY (product_id) REFERENCES products(product_id)
-);
-
-create table cartitems(
 cart_item_id VARCHAR primary key,
 product_name VARCHAR not null unique,
 price float not null,

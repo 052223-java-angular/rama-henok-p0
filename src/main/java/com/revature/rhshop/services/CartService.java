@@ -35,25 +35,25 @@ public class CartService {
 
     }
 
+    public String findByProductName(String product_name){
+
+        return cartItemsDAO.findByProductName(product_name);
+
+    }
+
+
     public List<CartItems> findAll() {
-        
-        
-        List<CartItems> l = cartItemsDAO.findAll();
         
         return cartItemsDAO.findAll();
     }
 
-    public void addToCart( String userId ){
+    public Carts addToCart( String userId ){
         Carts cart = new Carts(userId);
-        cartDAO.save(cart);
+        return cartDAO.saveCart(cart);
     }
 
-    public void addToCartItems( String userId, int productId, String productName, float productPrice, int stock  ){
-       Carts cart = cartDAO.findById(userId);
-
-       CartItems cartItems = new CartItems( productName, productPrice, stock, cart.getCart_id(), productId );
-
-       cartItemsDAO.save( cartItems  );
+    public void addToCartItems(CartItems cartItems){
+       cartItemsDAO.save(cartItems);
     }
 
    

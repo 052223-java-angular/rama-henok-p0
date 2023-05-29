@@ -98,6 +98,41 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
         
     }
 
+    public String findByProductName(String product_name) {
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+
+            String sql = "SELECT * FROM cartitems WHERE product_name = ?";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+
+                ps.setString(1, product_name);
+
+                try(ResultSet rs = ps.executeQuery()){
+                    if(rs.next()){
+                        return rs.getString("cart_item_id");
+                    }
+                }
+            }
+            
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Find Class");
+        }catch(IOException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Run");
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to access Database");
+        }
+
+        return "";
+
+        
+    }
+
+
     @Override
     public List<CartItems> findAll() {
 
@@ -114,6 +149,7 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
                     while(rs.next()){
                         CartItems item = new CartItems();
 
+                        item.setCart_item_id(rs.getString("cart_item_id"));
                         item.setProduct_name(rs.getString("product_name"));;
                         item.setPrice(rs.getFloat("price"));
                         item.setQuantity(rs.getInt("quantity"));

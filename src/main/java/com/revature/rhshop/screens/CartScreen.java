@@ -25,22 +25,40 @@ public class CartScreen implements IScreen{
             while(true){
                 ClearScreen();
 
-                System.out.println(" Your Cart:...");
+                System.out.println(" Welcome to Your Cart:...");
 
-                cartItemsFinder();// while this list has next display the code below
-                System.out.println(" \nProduct Name: " ); //add product name from cartitems table
-                System.out.println(" \nPrice: "); //Price of product  //edit alignment 
+                List<CartItems> cartItemsList = cartItemsFinder();
+                // while this list has next display the code below
+                // cartItemsList.stream().forEach(System.out::print);
+
+                for(int i = 0; i < cartItemsList.size(); i++){
+                    CartItems cartItems = cartItemsList.get(i);
+                    int index = i+1;
+                    System.out.println("\nItemNum " + index + "     Product Name: " + cartItems.getProduct_name()+ 
+                    "       Price: " + cartItems.getPrice() + "     Quantity= " + cartItems.getQuantity()); //add product name from cartitems table
+                }
+
+                System.out.println("---------------------------------------------------------------------------------------------");
                 System.out.println("\n[R] Remove    " + "[E] Edit Quantity  " + "[C] Checkout");
                 System.out.println("\n[B] Browse    " + "[M] Main Menu   ");
 
-                System.out.print("\nEnter (x ot cancel):  ");
+                System.out.print("\nEnter Option (x ot cancel):  ");
                 input = scan.nextLine();
+
 
                 switch (input.toLowerCase()) {
                     case "r":
+                    System.out.println("\nEnter Item Number you want to Remove...");
+                    int itemIndex = scan.nextInt() -1; 
+                        
+                    CartItems cartItems = cartItemsList.get(itemIndex);
+                    System.out.println("You selected: " + cartItems.getProduct_name());
+                    scan.nextLine();
+    
                         // remove from cart item by using cart_item_id 
-                        String cart_item_idTempo = "69";
-                        boolean bool = cartService.delete(cart_item_idTempo);
+                        String cartItemId = cartItems.getCart_item_id();
+                        
+                        boolean bool = cartService.delete(cartItemId);
                         if(bool = true){
 
                             System.out.println("Item deleted From cart Successfuly!...");
