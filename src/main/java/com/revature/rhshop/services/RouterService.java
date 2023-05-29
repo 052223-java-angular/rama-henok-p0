@@ -13,6 +13,7 @@ import com.revature.rhshop.screens.HomeScreen;
 import com.revature.rhshop.screens.RegisterScreen;
 import com.revature.rhshop.screens.LoginScreen;
 import com.revature.rhshop.screens.MenuScreen;
+import com.revature.rhshop.screens.SearchScreen;
 import com.revature.rhshop.screens.BrowsingScreen;
 import com.revature.rhshop.utils.Session;
 
@@ -47,6 +48,12 @@ public class RouterService {
             case "/browse":
                 new BrowsingScreen(getProductService(), this, session, getCartService() ).start(scan);
             break;
+
+
+            case "/search":
+                new SearchScreen(getProductService(), this, session ).start(scan);
+            break;
+
 
             case "/cart":
             new CartScreen(getRouterService(),getCartService()).start(scan);
