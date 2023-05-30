@@ -172,7 +172,7 @@ public class ProductDAO implements CrudDAO<Products> {
        
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "select * from products where category_name ilike ? order by category_name";
-            System.out.println("sql " + sql);
+            //System.out.println("sql " + sql);
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, "%" + category_name + "%");
@@ -201,6 +201,41 @@ public class ProductDAO implements CrudDAO<Products> {
 
         return productList;
     }
+
+    public List<Products> findByPriceRange(double min, double max) {
+        List<Products> productList = new ArrayList<Products>();
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "select * from products where price between ? and ? order by price";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setDouble(1, min);
+                ps.setDouble(2, max);
+                
+                try(ResultSet rs = ps.executeQuery()) {
+                    while(rs.next()) {
+                        productList.add(new Products(
+                            rs.getInt("product_id"), 
+                            rs.getString("product_name"),  
+                            rs.getFloat("price"), 
+                            rs.getInt("stock"),
+                            rs.getString("category_name")));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (IOException e) {
+            System.out.println("couldn't open db.properties");
+            throw new RuntimeException(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println("couldn't find postgres driver for jdbc");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return productList;
+    }
+
+
 
 }//endOfClass
 
