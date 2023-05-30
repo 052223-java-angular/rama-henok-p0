@@ -63,6 +63,10 @@ public class CartService {
     
     }
 
+    public void celarCart() {
+        cartItemsDAO.celarCart();
+    }
+
    
 
 

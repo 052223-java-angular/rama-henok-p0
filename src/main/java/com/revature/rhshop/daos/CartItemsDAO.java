@@ -276,5 +276,31 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
             throw new RuntimeException("Unable to access Database");
         }
     }
+
+
+    public void celarCart() {
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+
+            //AS total refers to an alias which is used to store the calculated result of the sql statment
+            String sql = "TRUNCATE TABLE cartitems";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+
+                ps.executeUpdate();
+            }
+            
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Find Class");
+        }catch(IOException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Run");
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to access Database");
+        }
+    }
      
 }

@@ -2,9 +2,12 @@ package com.revature.rhshop.screens;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.UUID;
 
 import com.revature.rhshop.models.CartItems;
+import com.revature.rhshop.models.OrderItems;
 import com.revature.rhshop.models.Products;
 import com.revature.rhshop.services.CartService;
 import com.revature.rhshop.services.ProductService;
@@ -36,6 +39,10 @@ public class CartScreen implements IScreen{
                 List<CartItems> cartItemsList = cartItemsFinder();
                 // while this list has next display the code below
                 // cartItemsList.stream().forEach(System.out::print);
+                if(cartItemsList.isEmpty()){
+                    System.out.println("Your Cart is Empty...");
+                    System.out.println("You can check out out new items by browsing our shop!.... ");
+                }
 
                 for(int i = 0; i < cartItemsList.size(); i++){
                     CartItems cartItems = cartItemsList.get(i);
@@ -54,7 +61,7 @@ public class CartScreen implements IScreen{
 
                 int itemIndex = 0;
                 String cartItemId = "";
-                CartItems cartItems;
+                CartItems cartItems = new CartItems();
 
                 switch (input.toLowerCase()) {
     
@@ -186,7 +193,13 @@ public class CartScreen implements IScreen{
                         break;
                     }
                         System.out.println("\nPayment Processed Successfully...");
+                        if(movingCartItems(cartItems)){
+                            cartService.celarCart();
+                        }
+
+                        scan.nextLine();
                         System.out.println("Thank you for Placing Your Order...");
+                        scan.nextLine();
                         break exit;
                     }
                     case "x":
@@ -241,6 +254,25 @@ public class CartScreen implements IScreen{
         System.out.print("\033[H\033[2J");  
         System.out.flush();  
     } 
+
+    private boolean movingCartItems(CartItems cartItems){
+
+        OrderItems orderItems = new OrderItems();
+
+        Random random = new Random();
+
+        orderItems.setOrder_id(random.nextInt());
+
+         int order_item_id;
+         int quantity;
+         float price;
+         int order_id;
+         int product_id;
+
+
+
+        return true;
+    }
 
 
 }
