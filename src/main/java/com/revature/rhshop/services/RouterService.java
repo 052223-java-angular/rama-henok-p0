@@ -52,7 +52,7 @@ public class RouterService {
 
 
             case "/search":
-                new SearchScreen(getProductService(), this, session ).start(scan);
+                new SearchScreen(getProductService(), this, session, getCartService() ).start(scan);
             break;
 
 

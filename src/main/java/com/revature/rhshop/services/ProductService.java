@@ -24,14 +24,17 @@ public class ProductService {
     }
 
     public Products findById(int product_id){
-        
-
         return productDAO.findProductId(product_id);
     }
+    
     public List<Products> getByCategory(String category) {
         return productDAO.findByCategory(category);
     }
-   
+
+
+    public List<Products> getByPriceRange(Double min, Double max) {
+        return productDAO.findByPriceRange(min, max);
+    }
 
     
 }
