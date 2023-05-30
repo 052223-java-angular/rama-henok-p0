@@ -15,30 +15,24 @@ import com.revature.rhshop.models.Products;
 import com.revature.rhshop.utils.Session;
 import com.revature.rhshop.services.ProductService;
 import com.revature.rhshop.services.RouterService;
-import com.revature.rhshop.models.CartItems;
-import com.revature.rhshop.models.Carts;
-import com.revature.rhshop.services.CartService;
-import java.util.UUID;
 
 
 //@AllArgsConstructor
-public class SearchScreen implements IScreen {
+public class SearchScreenold implements IScreen {
    
     private ProductService productService;
     private RouterService routerService;
     private Session session;
-    private final CartService cartService;
     
     /**
      * Constructs a new SearchScreen with the specified Session.
      *
      * @param session the Session containing user information
      */
-    public SearchScreen( ProductService productService, RouterService routerService, Session session, CartService cartService ) {
+    public SearchScreenold( ProductService productService, RouterService routerService, Session session ) {
         this.productService = productService;
         this.routerService = routerService;
         this.session = session;
-        this.cartService = cartService;
     }
 
     @Override
@@ -130,18 +124,21 @@ public class SearchScreen implements IScreen {
                 System.out.println("\nProduct found:");
                 System.out.println("\nEnter x to go back: \n");
                 // Print the product details
-
-                displayList(products, "...Search By Prouduct Name\n Products Found: \n");
-
-                System.out.println(" Pick Your Item or Enter x to exit");
-                input = scan.nextLine();
-                String status = processInput(input, products);
+                for(int i = 0; i < products.size(); i++){
+                    Products product = products.get(i);
+                    System.out.println(i +1 + " ProductName: " + 
+                    product.getProduct_name() + " " +
+                    " Category: " +  product.getCategory_name() + " Price: " + product.getPrice() + " Stock: " + product.getStock() );
     
-                if ( status == "invalidOption" || status == "x" ){
-                    break;
-                } 
-                
-                continue; // Get more selections
+                    input = scan.nextLine();
+                    
+                    if(input.equals("x")){
+                        break;
+                    }
+              
+                    input = scan.nextLine();
+                }
+
 
             }
         }
@@ -153,9 +150,9 @@ public class SearchScreen implements IScreen {
     
         while(true){
             //clearScreen();
-            System.out.println("\nSearching by Product Category ");
+            System.out.println("Searching by Product Category ");
     
-            System.out.println("\nProduct Categories: \n");
+            System.out.println("Product Categories: \n");
             for(int i = 0; i < categoryList.size(); i++){
                 System.out.println("[" + (i+1) + "] " + categoryList.get(i));
             }
@@ -183,25 +180,24 @@ public class SearchScreen implements IScreen {
                 //clearScreen();
                 System.out.println("\nProduct found:");
                 System.out.println("Enter x to go back: \n");
-
-                displayList(products, "Product List:");
-                System.out.println(" Pick Your Item or Enter x to exit");
-                input = scan.nextLine();
-                String status = processInput(input, products);
-
-                if ( status == "invalidOption" || status == "x" ){
-                    break;
-                } 
-                continue; // Get more selections
+                
+                for(int i = 0; i < products.size(); i++){   
+                    Products product = products.get(i);
+                    System.out.println( i+1 + ") " +  " Category: " + product.getCategory_name() + " ProductName: " + 
+                    product.getProduct_name() + " Price: " + product.getPrice() + " Stock: " +  product.getStock() );
+                    System.out.println("");
+                }  
             }       
         }
     }
 
     public void searchByPriceRange(Scanner scan, String input){
+
+        //List<String> categoryList = productService.getAllCategories();
         
         while(true){
             //clearScreen();
-            System.out.println("\nSearching by Price Range ");
+            System.out.println("Searching by Price Range ");
 
             if(input.equalsIgnoreCase("x")){
                 break;
@@ -238,7 +234,7 @@ public class SearchScreen implements IScreen {
             // get list of products from database
             List<Products> products = new ArrayList<Products>();
             products = productService.getByPriceRange(min, max);
-            displayList(products, "--------Products in the price range---------------");
+            displayList(products);
            
 
             System.out.println(" Pick Your Item or Enter x to exit");
@@ -250,6 +246,7 @@ public class SearchScreen implements IScreen {
             } 
             
             continue; // Get more selections
+            
 
         }
     }
@@ -267,20 +264,20 @@ public class SearchScreen implements IScreen {
         return true;
     }    
 
-    private void displayList(List<Products> products, String label){
+    private void displayList(List<Products> products){
         //loop through products and output each product
         //clearScreen();
-        System.out.println(label);
+        System.out.println("---------------- Products In Price Range ------------------------------");
         for(int i = 0; i < products.size(); i++){   
             Products product = products.get(i);
             System.out.println( i+1 + ") " +  " Category: " + product.getCategory_name() + " ProductName: " + 
             product.getProduct_name() + " Price: " + product.getPrice() + " Stock: " +  product.getStock() );
-            System.out.println("");    
+            System.out.println("");
+          
         }    
     }
 
     private String processInput(String input, List<Products> productList){
-        String status = "success";
 
         try{ 
             int productIndex = Integer.parseInt(input) -1; 
@@ -291,6 +288,7 @@ public class SearchScreen implements IScreen {
                
                 //fix
 
+                /******** 
                 String productName = product.getProduct_name();
                 String cart_item_id = searchCartByName(productName);
                
@@ -300,15 +298,18 @@ public class SearchScreen implements IScreen {
                     int quantity = cartitem.getQuantity() + 1;
 
                     this.cartService.updateQuantity(cart_item_id, quantity);
-                } else{
-                    int quantity = 1;
+                }else{
+                int quantity = 1;
                 
-                    Carts cart = addToCart(product);
+                Carts cart = addToCart(product);
 
-                    System.out.println(addCartItem(product, quantity, cart.getCart_id()));
-    
-                    status =  "success";
-                } 
+                System.out.println(addCartItem(product, quantity, cart.getCart_id()));
+                ***/
+                 return "success";
+            } else{
+                //logger.warn("Invalid option!");
+                clearScreen();
+                return "invalidOption";
             }
         
         } catch(NumberFormatException e){
@@ -316,40 +317,14 @@ public class SearchScreen implements IScreen {
                 case "x":
                     //logger.info("User signed out");
                     return "x";
-                
                 default:
                     //logger.warn("Invalid option!");
                     clearScreen();
                     return "invalidOption";
              }
         }
-        return status;
-
-    }
-
-    private Carts addToCart(Products product ) {
-        return this.cartService.addToCart(session.getId());
-    }
-
-    private String addCartItem(Products product, int quantity, int cart_id) {
-        CartItems cartItems = new CartItems();
-
-        cartItems.setCart_item_id(UUID.randomUUID().toString());
-        cartItems.setProduct_name(product.getProduct_name());
-        cartItems.setPrice(product.getPrice());
-        cartItems.setQuantity(quantity);
-        cartItems.setCart_id(cart_id);
-        cartItems.setProduct_id(product.getProduct_id());
-
-        cartService.addToCartItems(cartItems);
-
-        return "Added to cart successfully....";
-    }
-
-    private String searchCartByName(String product_name){
-
-        return this.cartService.findByProductName(product_name);
         
+
     }
 
 }//EndOfClass
