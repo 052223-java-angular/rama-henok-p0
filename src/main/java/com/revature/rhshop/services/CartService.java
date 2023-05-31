@@ -23,21 +23,21 @@ public class CartService {
         return cartOpt;
     }
 
-    public int updateQuantity(String cart_item_id, int quantity){
+    public int updateQuantity(String cart_item_id, int quantity, String user_id){
 
-        return cartItemsDAO.updateQuantity(cart_item_id, quantity);
-
-    }
-
-    public boolean delete(String cart_item_id) {
-
-        return cartItemsDAO.deleteById(cart_item_id);
+        return cartItemsDAO.updateQuantity(cart_item_id, quantity, user_id);
 
     }
 
-    public String findByProductName(String product_name){
+    public boolean delete(String cart_item_id, String user_id) {
 
-        return cartItemsDAO.findByProductName(product_name);
+        return cartItemsDAO.deleteById(cart_item_id, user_id);
+
+    }
+
+    public String findByProductName(String user_id, String product_name){
+
+        return cartItemsDAO.findByProductName(user_id, product_name);
 
     }
 
@@ -63,8 +63,13 @@ public class CartService {
     
     }
 
-    public void celarCart() {
-        cartItemsDAO.celarCart();
+    public int celarCart(String user_id) {
+       return cartItemsDAO.celarCart(user_id);
+    }
+
+    public CartItems findAllItems(String user_id) {
+        // retrive all cart items as an object
+        return cartItemsDAO.findAllOrders(user_id);
     }
 
    

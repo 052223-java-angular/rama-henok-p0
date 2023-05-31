@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Random;
 
+import com.revature.rhshop.models.CartItems;
 import com.revature.rhshop.models.OrderItems;
 import com.revature.rhshop.utils.ConnectionFactory;
 
@@ -62,6 +64,35 @@ public class OrderItemsDAO implements CrudDAO<OrderItems>{
     public List<OrderItems> findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+    }
+
+    public boolean movingCartItems(CartItems orders) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+
+            String sql = "insert into orderitems (order_item_id, quantity, product_id) values (?, ?, ?)";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+
+                Random random = new Random();
+
+                ps.setInt(1, random.nextInt() );
+                ps.setInt(2, orders.getQuantity());
+                ps.setInt(3, orders.getProduct_id());
+
+                ps.executeUpdate();
+            }
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Find Class");
+        }catch(IOException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Run");
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to access Database");
+        }
+        return false;
     }
     
 }

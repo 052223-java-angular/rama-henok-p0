@@ -7,9 +7,12 @@ import java.util.Random;
 import java.util.Scanner;
 
 import com.revature.rhshop.models.CartItems;
+import com.revature.rhshop.models.OrderItems;
 import com.revature.rhshop.models.Orders;
 import com.revature.rhshop.models.Products;
 import com.revature.rhshop.services.CartService;
+import com.revature.rhshop.services.OrderItemsService;
+import com.revature.rhshop.services.OrdersService;
 import com.revature.rhshop.services.ProductService;
 import com.revature.rhshop.services.RouterService;
 import com.revature.rhshop.utils.Session;
@@ -24,11 +27,16 @@ public class CartScreen implements IScreen{
     private final CartService cartService;
     private Session session;
     private final ProductService productService;
+    private final OrdersService ordersService;
+    private final OrderItemsService orderItemsService;
 
     @Override
     public void start(Scanner scan) {
         String input = "";
         String intValue = "";
+        int itemIndex = 0;
+        String cartItemId = "";
+        CartItems cartItems = new CartItems();
 
         exit: {
             while(true){
@@ -41,10 +49,10 @@ public class CartScreen implements IScreen{
                 emptyCart(cartItemsList);// this will check if the cart is empty or not 
 
                 for(int i = 0; i < cartItemsList.size(); i++){
-                    CartItems cartItems = cartItemsList.get(i);
+                    CartItems cartItemsDisplay = cartItemsList.get(i);
                     int index = i+1;
-                    System.out.println("\nItemNum " + index + "     Product Name: " + cartItems.getProduct_name()+ 
-                    "       Price: $ " + cartItems.getPrice() + "     Quantity= " + cartItems.getQuantity()); //add product name from cartitems table
+                    System.out.println("\nItemNum " + index + "     Product Name: " + cartItemsDisplay.getProduct_name()+ 
+                    "       Price: $ " + cartItemsDisplay.getPrice() + "     Quantity= " + cartItemsDisplay.getQuantity()); //add product name from cartitems table
                 }
 
                 System.out.println("---------------------------------------------------------------------------------------------");
@@ -53,11 +61,6 @@ public class CartScreen implements IScreen{
 
                 System.out.print("\nEnter Option (x ot cancel):  ");
                 input = scan.nextLine();
-
-
-                int itemIndex = 0;
-                String cartItemId = "";
-                CartItems cartItems = new CartItems();
 
                 switch (input.toLowerCase()) {
     
@@ -86,7 +89,7 @@ public class CartScreen implements IScreen{
                             cartItemId = cartItems.getCart_item_id();
                             
                             
-                            if(cartService.delete(cartItemId) == true){
+                            if(cartService.delete(cartItemId, session.getId()) == true){
 
                                 System.out.println("Item removed From cart Successfuly!...");
                                 scan.nextLine();
@@ -96,10 +99,12 @@ public class CartScreen implements IScreen{
                             
                                 scan.nextLine();
                                 break;
-                        }
+                        }else{
                             scan.nextLine();
                             routerService.navigate("/browse", scan);
                             break exit;
+                        }
+                       
 //,,,,,,,,,,,,,,
                     case "e":
                         if(emptyCart(cartItemsList)){ 
@@ -145,15 +150,17 @@ public class CartScreen implements IScreen{
                                 scan.nextLine();
                                 break;
                             }
-                            cartService.updateQuantity(cartItemId, newQuantity); 
+                            cartService.updateQuantity(cartItemId, newQuantity, session.getId()); 
                             // cartService.findById();    this option needs to get cart_id from cart table using the user id i can get the cart id
                             //fusing cart_id i can get the cart items of the user then i can get all the info in the cart                  
 
                             //
-                        }
+                        }else{
                             scan.nextLine();
                             routerService.navigate("/browse", scan);
                             break exit;
+                        }
+                        break;
 
                     case "c":
                         if(emptyCart(cartItemsList)){ 
@@ -185,7 +192,8 @@ public class CartScreen implements IScreen{
                                     System.out.println("\nPlease enter Whole Numbers only!");
                                     System.out.println(" press Enter to continue....");
                                     scan.nextLine();
-                                    break here;
+                                    // break here;
+                                    continue;
                                 }
 
                                 System.out.println("\nEnter Card Security code Number:    ");
@@ -203,10 +211,18 @@ public class CartScreen implements IScreen{
                                 
                                 break;
                             }
-                            System.out.println("\nPayment Processed Successfully...");
+                            System.out.println("\nPayment is Being processed...");
+
+                            CartItems purchasedItems = allCartItemsFinder(session.getId());
+                            orderItemsService.movingCartItems(purchasedItems);
+
                             try {
+                                //this will move cart items into orders table to keeo it as an order history
+
                                 if(movingCartItems(cartItems, finalAmount )){
-                                    cartService.celarCart();
+                                    if(cartService.celarCart(session.getId()) > 0){
+                                        System.out.println("Payment Processed Successfully");
+                                    }
                                 }
                             } catch (PaymentDeclinedException e) {
                                 e.printStackTrace();
@@ -217,10 +233,12 @@ public class CartScreen implements IScreen{
                             scan.nextLine();
                             break exit;
                             }
-                        }
+                            }else{
                             scan.nextLine();
                             routerService.navigate("/browse", scan);
                             break exit;
+                        }
+                        // break;
 
                     case "x":
                         System.out.print("\nExit Successful.....Goodbye!");
@@ -247,6 +265,13 @@ public class CartScreen implements IScreen{
 
 
         /*----------------------> Healper Methods <---------------- */
+
+    private CartItems allCartItemsFinder(String user_id) {
+        return  cartService.findAllItems(user_id);
+    }
+
+
+
 
     private List<CartItems> cartItemsFinder(String user_id){
         return  cartService.findAll(user_id);
@@ -277,26 +302,18 @@ public class CartScreen implements IScreen{
 
     private boolean movingCartItems(CartItems cartItems, double totalPrice) throws PaymentDeclinedException{
 
-        boolean bool = false;
         Orders orders = new Orders();
 
         Random random = new Random();
 
-        if(bool == false){
         orders.setOrder_id(random.nextInt());
         orders.setProduct_name(cartItems.getProduct_name());
         orders.setTotal_cost(totalPrice);
         orders.setOrder_time(LocalDate.now());
         orders.setUser_id(session.getId());
 
-        bool = true;
-        }else{
-            bool = false;
-            throw new PaymentDeclinedException();    
         
-        }
-
-        return bool;
+        return ordersService.movingCartItems(orders);
     
     }
 

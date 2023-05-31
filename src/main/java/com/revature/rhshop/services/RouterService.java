@@ -3,6 +3,8 @@ package com.revature.rhshop.services;
 import java.util.Scanner;
 
 import com.revature.rhshop.daos.CartItemsDAO;
+import com.revature.rhshop.daos.OrderDAO;
+import com.revature.rhshop.daos.OrderItemsDAO;
 import com.revature.rhshop.daos.CartDAO;
 import com.revature.rhshop.daos.RoleDAO;
 import com.revature.rhshop.daos.UserDAO;
@@ -57,7 +59,7 @@ public class RouterService {
 
 
             case "/cart":
-                new CartScreen(getRouterService(),getCartService(), session, getProductService()).start(scan);
+                new CartScreen(getRouterService(),getCartService(), session, getProductService(), getOrdersService(), getOrderItemService()).start(scan);
                 break;
 
             case "/order":
@@ -92,6 +94,14 @@ public class RouterService {
     private ProductService getProductService() {
 
         return new ProductService(new ProductDAO());
+    }
+
+    private OrdersService getOrdersService(){
+        return new OrdersService(new OrderDAO());
+    }
+
+    private OrderItemsService getOrderItemService(){
+        return new OrderItemsService(new OrderItemsDAO());
     }
 
    

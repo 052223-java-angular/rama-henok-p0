@@ -292,14 +292,14 @@ public class SearchScreen implements IScreen {
                 //fix
 
                 String productName = product.getProduct_name();
-                String cart_item_id = searchCartByName(productName);
+                String cart_item_id = searchCartByName(session.getId(), productName);
                
                 if(!cart_item_id.equals("")){
 
                     CartItems cartitem = this.cartService.findById(cart_item_id);
                     int quantity = cartitem.getQuantity() + 1;
 
-                    this.cartService.updateQuantity(cart_item_id, quantity);
+                    this.cartService.updateQuantity(cart_item_id, quantity, session.getId());
                 } else{
                     int quantity = 1;
                 
@@ -346,14 +346,13 @@ public class SearchScreen implements IScreen {
         return "Added to cart successfully....";
     }
 
-    private String searchCartByName(String product_name){
+    private String searchCartByName(String user_id, String product_name){
 
-        return this.cartService.findByProductName(product_name);
+        return this.cartService.findByProductName(user_id, product_name);
         
     }
 
 }//EndOfClass
-
 
 
 
