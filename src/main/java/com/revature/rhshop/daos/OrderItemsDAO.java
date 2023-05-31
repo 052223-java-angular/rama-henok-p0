@@ -66,10 +66,10 @@ public class OrderItemsDAO implements CrudDAO<OrderItems>{
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
-    public boolean movingCartItems(CartItems orders) {
+    public boolean movingCartItems(CartItems orders, int order_id) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
-            String sql = "insert into orderitems (order_item_id, quantity, product_id) values (?, ?, ?)";
+            String sql = "insert into orderitems (order_item_id, quantity,price, order_id, product_id) values (?, ?, ?, ?, ?)";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
 
@@ -77,7 +77,9 @@ public class OrderItemsDAO implements CrudDAO<OrderItems>{
 
                 ps.setInt(1, random.nextInt() );
                 ps.setInt(2, orders.getQuantity());
-                ps.setInt(3, orders.getProduct_id());
+                ps.setDouble(3, orders.getPrice());
+                ps.setInt(4, order_id);
+                ps.setInt(5, orders.getProduct_id());
 
                 ps.executeUpdate();
             }

@@ -9,9 +9,9 @@ import lombok.AllArgsConstructor;
 public class OrderItemsService {
     private final OrderItemsDAO orderItemsDAO;
 
-    public boolean movingCartItems(CartItems orders){
+    public boolean movingCartItems(CartItems orders, int order_id){
 
-        if(orderItemsDAO.movingCartItems(orders)){
+        if(orderItemsDAO.movingCartItems(orders, order_id)){
             return true;
         }
 

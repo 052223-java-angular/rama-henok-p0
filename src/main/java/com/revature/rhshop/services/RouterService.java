@@ -63,7 +63,7 @@ public class RouterService {
                 break;
 
             case "/order":
-                new OrderScreen();
+                new OrderScreen(session, getOrdersService(), getProductService()).start(scan);
                 break;
             
             default:

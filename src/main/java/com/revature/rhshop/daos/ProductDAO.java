@@ -129,6 +129,8 @@ public class ProductDAO implements CrudDAO<Products> {
     }
 
     public Products findProductId(int product_id) {
+
+        
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
             String sql = "SELECT * FROM products WHERE product_id = ?";

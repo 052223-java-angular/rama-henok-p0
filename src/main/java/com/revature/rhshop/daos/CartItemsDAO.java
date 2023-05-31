@@ -346,6 +346,7 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
                         item.setProduct_id(rs.getInt("product_id"));
                         item.setUser_id(rs.getString("user_id"));
                         
+                        
                     }
 
                     return item;
