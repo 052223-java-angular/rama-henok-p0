@@ -51,6 +51,7 @@ public class MenuScreen implements IScreen {
                 System.out.println("\n[2] Browse Products");
                 System.out.println("\n[3] Search Products");
                 System.out.println("\n[4] View Order History");
+                System.out.println("\n[5] Review Products");
                 System.out.println("\n[x] Exit");
                 System.out.print("\nEnter: ");
                 input = scan.nextLine();
@@ -76,9 +77,17 @@ public class MenuScreen implements IScreen {
                     case "4":
                         logger.info("Navigating to Order Screen");
                         System.out.println("This feature Will be Available soon......");
+                        scan.nextLine();
                         // routerService.navigate("/order", scan);
 
                     break;
+
+                    case "5":
+                        logger.info("Navigating to Review Screen");
+                        // System.out.println("2");
+                        routerService.navigate("/review", scan);
+                    break;
+                    
                     
                     case "x":
                         logger.info("user sign out");
