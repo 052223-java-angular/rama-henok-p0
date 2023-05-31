@@ -7,11 +7,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 import com.revature.rhshop.models.CartItems;
-import com.revature.rhshop.models.OrderItems;
 import com.revature.rhshop.models.Orders;
 import com.revature.rhshop.models.Products;
 import com.revature.rhshop.services.CartService;
 import com.revature.rhshop.services.OrderItemsService;
+
 import com.revature.rhshop.services.OrdersService;
 import com.revature.rhshop.services.ProductService;
 import com.revature.rhshop.services.RouterService;
@@ -213,14 +213,14 @@ public class CartScreen implements IScreen{
                             }
                             System.out.println("\nPayment is Being processed...");
 
-                            CartItems purchasedItems = allCartItemsFinder(session.getId());
-                            orderItemsService.movingCartItems(purchasedItems);
-
                             try {
                                 //this will move cart items into orders table to keeo it as an order history
-
-                                if(movingCartItems(cartItems, finalAmount )){
-                                    if(cartService.celarCart(session.getId()) > 0){
+                                int order_id = movingCartItems(cartItems, finalAmount) ;
+                                System.out.println(order_id);
+                                if(order_id > 0){
+                                    if(cartService.celarCart(session.getId()) != 0){
+                                        CartItems purchasedItems = allCartItemsFinder(session.getId());
+                                        orderItemsService.movingCartItems(purchasedItems, order_id);
                                         System.out.println("Payment Processed Successfully");
                                     }
                                 }
@@ -300,20 +300,22 @@ public class CartScreen implements IScreen{
         System.out.flush();  
     } 
 
-    private boolean movingCartItems(CartItems cartItems, double totalPrice) throws PaymentDeclinedException{
-
+    private int movingCartItems(CartItems cartItems, double totalPrice) throws PaymentDeclinedException{
+        
         Orders orders = new Orders();
 
         Random random = new Random();
+        int id = random.nextInt();
 
-        orders.setOrder_id(random.nextInt());
+        orders.setOrder_id(id);
         orders.setProduct_name(cartItems.getProduct_name());
         orders.setTotal_cost(totalPrice);
-        orders.setOrder_time(LocalDate.now());
+        orders.setOrder_time("");
         orders.setUser_id(session.getId());
 
         
-        return ordersService.movingCartItems(orders);
+
+        return id;
     
     }
 

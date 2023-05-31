@@ -76,8 +76,10 @@ public class MenuScreen implements IScreen {
 
                     case "4":
                         logger.info("Navigating to Order Screen");
-                        // System.out.println("2");
-                        routerService.navigate("/order", scan);
+                        System.out.println("This feature Will be Available soon......");
+                        scan.nextLine();
+                        // routerService.navigate("/order", scan);
+
                     break;
 
                     case "5":
