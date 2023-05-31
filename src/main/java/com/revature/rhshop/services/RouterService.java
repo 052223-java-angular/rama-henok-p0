@@ -10,6 +10,9 @@ import com.revature.rhshop.daos.RoleDAO;
 import com.revature.rhshop.daos.UserDAO;
 import com.revature.rhshop.screens.CartScreen;
 import com.revature.rhshop.daos.ProductDAO;
+import com.revature.rhshop.daos.ReviewDAO;
+
+
 
 import com.revature.rhshop.screens.HomeScreen;
 import com.revature.rhshop.screens.RegisterScreen;
@@ -18,6 +21,7 @@ import com.revature.rhshop.screens.MenuScreen;
 import com.revature.rhshop.screens.OrderScreen;
 import com.revature.rhshop.screens.SearchScreen;
 import com.revature.rhshop.screens.BrowsingScreen;
+import com.revature.rhshop.screens.ReviewScreen;
 import com.revature.rhshop.utils.Session;
 
 import lombok.AllArgsConstructor;
@@ -65,6 +69,10 @@ public class RouterService {
             case "/order":
                 new OrderScreen();
                 break;
+
+            case "/review":
+                new ReviewScreen(getProductService(), this, session, getReviewService()).start(scan);
+                break;
             
             default:
                  break;
@@ -103,6 +111,11 @@ public class RouterService {
     private OrderItemsService getOrderItemService(){
         return new OrderItemsService(new OrderItemsDAO());
     }
+
+    private ReviewService getReviewService() {
+        return new ReviewService(new ReviewDAO());
+    }
+
 
    
 
