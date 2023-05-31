@@ -83,7 +83,7 @@ public class BrowsingScreen implements IScreen{
                         
                         Carts cart = addToCart(product);
 
-                        System.out.println(addCartItem(product, quantity, cart.getCart_id()));
+                        System.out.println(addCartItem(product, quantity, cart.getCart_id(), session.getId()));
                         input = scan.nextLine();
                         }
 
@@ -115,7 +115,7 @@ public class BrowsingScreen implements IScreen{
         return this.cartService.addToCart(session.getId());
     }
 
-    private String addCartItem(Products product, int quantity, int cart_id) {
+    private String addCartItem(Products product, int quantity, int cart_id, String user_id) {
         CartItems cartItems = new CartItems();
 
         cartItems.setCart_item_id(UUID.randomUUID().toString());
@@ -124,6 +124,7 @@ public class BrowsingScreen implements IScreen{
         cartItems.setQuantity(quantity);
         cartItems.setCart_id(cart_id);
         cartItems.setProduct_id(product.getProduct_id());
+        cartItems.setUser_id(user_id);
 
         cartService.addToCartItems(cartItems);
 

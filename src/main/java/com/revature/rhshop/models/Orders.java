@@ -1,6 +1,6 @@
 package com.revature.rhshop.models;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,8 +16,8 @@ import lombok.ToString;
 public class Orders {
     private int order_id;
     private String product_name;
-    private float total_cost;
-    private Date order_time;
+    private double total_cost;
+    private LocalDate order_time;
     private String user_id;
    
 
