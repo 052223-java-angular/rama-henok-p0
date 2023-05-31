@@ -42,9 +42,9 @@ public class CartService {
     }
 
 
-    public List<CartItems> findAll() {
+    public List<CartItems> findAll(String user_id) {
         
-        return cartItemsDAO.findAll();
+        return cartItemsDAO.findAllByUser(user_id);
     }
 
     public Carts addToCart( String userId ){

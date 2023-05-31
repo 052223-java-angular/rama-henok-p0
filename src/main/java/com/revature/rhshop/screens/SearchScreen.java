@@ -241,7 +241,7 @@ public class SearchScreen implements IScreen {
             displayList(products, "--------Products in the price range---------------");
            
 
-            System.out.println(" Pick Your Item or Enter x to exit");
+            System.out.println(" Pick Your Item to Add to cart or Enter x to exit");
             input = scan.nextLine();
             String status = processInput(input, products);
 

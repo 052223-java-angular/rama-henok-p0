@@ -17,7 +17,7 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
     public void save(CartItems items) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
-            String sql = "insert into cartitems (cart_item_id, product_name, price, quantity, cart_id, product_id ) values (?, ?, ?, ?, ?, ?);";
+            String sql = "insert into cartitems (cart_item_id, product_name, price, quantity, cart_id, product_id, user_id ) values (?, ?, ?, ?, ?, ?, ?);";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
 
@@ -27,6 +27,7 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
                 ps.setInt(4, items.getQuantity());
                 ps.setInt(5, items.getCart_id());
                 ps.setInt(6, items.getProduct_id());
+                ps.setString(7, items.getUser_id());
 
                 ps.executeUpdate();
             }
@@ -56,8 +57,8 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
-    @Override
-    public CartItems findById(String cart_item_id) {
+
+    public CartItems findById7(String cart_item_id) {
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
@@ -76,6 +77,7 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
                         item.setQuantity(rs.getInt("quantity"));
                         item.setCart_id(rs.getInt("cart_id"));
                         item.setProduct_id(rs.getInt("product_id"));
+                        item.setUser_id(rs.getString("user_id"));
                         return item;
                     }
                 }
@@ -133,17 +135,18 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
     }
 
 
-    @Override
-    public List<CartItems> findAll() {
+    public List<CartItems> findAllByUser(String user_id) {
 
         List<CartItems> cartItemsList = new ArrayList<CartItems>();
 
         
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
-            String sql = "SELECT * FROM cartitems";
+            String sql = "SELECT * FROM cartitems WHERE user_id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
+               
+                ps.setString(1, user_id);
 
                 try(ResultSet rs = ps.executeQuery()){
                     while(rs.next()){
@@ -301,6 +304,20 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
             e.printStackTrace();
             throw new RuntimeException("Unable to access Database");
         }
+    }
+
+
+    @Override
+    public List<CartItems> findAll() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+    }
+
+
+    @Override
+    public CartItems findById(String id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
      
 }

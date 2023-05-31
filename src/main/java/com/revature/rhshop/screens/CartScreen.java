@@ -1,19 +1,19 @@
 package com.revature.rhshop.screens;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.UUID;
 
 import com.revature.rhshop.models.CartItems;
-import com.revature.rhshop.models.OrderItems;
+import com.revature.rhshop.models.Orders;
 import com.revature.rhshop.models.Products;
 import com.revature.rhshop.services.CartService;
 import com.revature.rhshop.services.ProductService;
 import com.revature.rhshop.services.RouterService;
 import com.revature.rhshop.utils.Session;
-import com.revature.rhshop.utils.customeExceptions.InvalidIndexInsertedException;
+import com.revature.rhshop.utils.customeExceptions.PaymentDeclinedException;
 
 import lombok.AllArgsConstructor;
 
@@ -36,13 +36,9 @@ public class CartScreen implements IScreen{
 
                 System.out.println(" Welcome to Your Cart: " + session.getUsername() + "...");
 
-                List<CartItems> cartItemsList = cartItemsFinder();
-                // while this list has next display the code below
-                // cartItemsList.stream().forEach(System.out::print);
-                if(cartItemsList.isEmpty()){
-                    System.out.println("Your Cart is Empty...");
-                    System.out.println("You can check out out new items by browsing our shop!.... ");
-                }
+                List<CartItems> cartItemsList = cartItemsFinder(session.getId());
+
+                emptyCart(cartItemsList);// this will check if the cart is empty or not 
 
                 for(int i = 0; i < cartItemsList.size(); i++){
                     CartItems cartItems = cartItemsList.get(i);
@@ -66,14 +62,21 @@ public class CartScreen implements IScreen{
                 switch (input.toLowerCase()) {
     
                     case "r":
-                        System.out.println("\nEnter Item Number you want to Remove...");
-                        itemIndex = scan.nextInt() -1; 
-                        if(!(itemIndex < cartItemsList.size())){
+
+                        if(emptyCart(cartItemsList)){ 
+
+                            System.out.println("\nEnter Item Number you want to Remove...");
+                            String inputValue = scan.nextLine();
+
+                         
+                            itemIndex = inputValidator(inputValue, cartItemsList.size());
                             
-                        System.out.println("Item Could not be removed....");
-                        scan.nextLine();
-                        break;
-                        }    
+                            if(itemIndex == 0){
+                                scan.nextLine();
+                                break;
+                            }  
+
+                            itemIndex --; //this will decrease the itemIndex by 1 because cartItemsList is a list and its index number starts from 0
 
                             cartItems = cartItemsList.get(itemIndex);
                             System.out.println("You selected: " + cartItems.getProduct_name());
@@ -89,119 +92,136 @@ public class CartScreen implements IScreen{
                                 scan.nextLine();
 
                                 routerService.navigate("/cart", scan);
-
                             }
                             
+                                scan.nextLine();
+                                break;
+                        }
                             scan.nextLine();
-                            break;
-                        // }
-                        // break exit;
+                            routerService.navigate("/browse", scan);
+                            break exit;
 //,,,,,,,,,,,,,,
                     case "e":
-                        System.out.println("\nEnter Item Number you want to Edit quantity...");
-                        itemIndex = scan.nextInt() -1; 
+                        if(emptyCart(cartItemsList)){ 
+                            System.out.println("\nEnter Item Number you want to Edit quantity...");
+                            String inputValue = scan.nextLine();
 
-                        if(!(itemIndex < cartItemsList.size())){
+                         
+                            itemIndex = inputValidator(inputValue, cartItemsList.size());
                             
-                            System.out.println("Invalid Item number pressed....");
+                            if(itemIndex == 0){
+                                scan.nextLine();
+                                break;
+                            }  
+
+                            itemIndex --;
+                                
+                            cartItems = cartItemsList.get(itemIndex);
+                            System.out.println("You selected: " + cartItems.getProduct_name());
                             scan.nextLine();
-                            break;
-                            }    
+        
+                            // edit quantity of the item from cart item by using cart_item_id 
+                            cartItemId = cartItems.getCart_item_id();
                             
-                        cartItems = cartItemsList.get(itemIndex);
-                        System.out.println("You selected: " + cartItems.getProduct_name());
-                        scan.nextLine();
-    
-                        // edit quantity of the item from cart item by using cart_item_id 
-                        cartItemId = cartItems.getCart_item_id();
-                        
-                        System.out.println("\nEnter Quantity: ");
-                        intValue = scan.nextLine();
+                            System.out.println("\nEnter Quantity: ");
+                            intValue = scan.nextLine();
 
-                        //checking if the user endered a number only input
-                        if(!intValue.matches("^\\d+$")){
-                            System.out.println("\nPlease enter Whole Numbers only!");
-                            System.out.println(" press Enter to continue....");
-                            scan.nextLine();
-                            break;
-                        }
-                        
-                        int product_id = cartItems.getProduct_id();
-                        int stock = this.productFinder(product_id).getStock();
-
-                        int newQuantity = Integer.parseInt(intValue);
-                        if(stock < newQuantity){
-                            System.out.println("You entered an amount which is greater than our stock...");
-                            System.out.println("we have: " + stock + " amounts of " + cartItems.getProduct_name() + " in our Stock.");
-                            System.out.println("please enter new amount");
-                            scan.nextLine();
-                            break;
-                        }
-                        cartService.updateQuantity(cartItemId, newQuantity); 
-                        // cartService.findById();    this option needs to get cart_id from cart table using the user id i can get the cart id
-                        //fusing cart_id i can get the cart items of the user then i can get all the info in the cart                  
-
-                        //
-                        break;
-
-                    case "c":
-                        //this will checkout the cart and clear cart too and save all cart items into order history 
-                        double totalPrice = priceCalculator();
-
-                        ClearScreen();
-                        System.out.println(" Checking out and Completing Order of " + session.getUsername() + " :...");
-                        System.out.println(" \nTotal Price $" + formater(totalPrice)); 
-                        double tax = totalPrice * 0.08;
-                        
-                        System.out.println(" \nTax:  " + formater(tax)); // total price * 0.08
-                        System.out.println(" \nShipping fee:  $ 5.00"); // 
-                        double finalAmount = totalPrice + tax + 5;
-
-                        System.out.println(" \n\ncart Total= $ " + formater(finalAmount)); // add price + tax + shipping fee
-                        System.out.println(" \nPress Enter to Confirm (x to cancel and clear cart)"); //
-                        String confirm = scan.nextLine();
-
-                        if(confirm.toLowerCase().equals("x")){
-                            //code to clear cart items table
-                            
-                            break;
-                        }
-                        here:{
-                            while(true){
-                                System.out.println("\nEnter Card Number:    ");
-                                String CardDetails = scan.nextLine();
-                                if(!CardDetails.matches("^\\d+$")){
+                            //checking if the user endered a number only input
+                            if(!intValue.matches("^\\d+$")){
                                 System.out.println("\nPlease enter Whole Numbers only!");
                                 System.out.println(" press Enter to continue....");
                                 scan.nextLine();
-                                break here;
+                                break;
+                            }
+                            
+                            int product_id = cartItems.getProduct_id();
+                            int stock = this.productFinder(product_id).getStock();
+
+                            int newQuantity = Integer.parseInt(intValue);
+                            if(stock < newQuantity){
+                                System.out.println("You entered an amount which is greater than our stock...");
+                                System.out.println("we have: " + stock + " amounts of " + cartItems.getProduct_name() + " in our Stock.");
+                                System.out.println("please enter new amount");
+                                scan.nextLine();
+                                break;
+                            }
+                            cartService.updateQuantity(cartItemId, newQuantity); 
+                            // cartService.findById();    this option needs to get cart_id from cart table using the user id i can get the cart id
+                            //fusing cart_id i can get the cart items of the user then i can get all the info in the cart                  
+
+                            //
+                        }
+                            scan.nextLine();
+                            routerService.navigate("/browse", scan);
+                            break exit;
+
+                    case "c":
+                        if(emptyCart(cartItemsList)){ 
+                            //this will checkout the cart and clear cart too and save all cart items into order history 
+                            double totalPrice = priceCalculator();
+
+                            ClearScreen();
+                            System.out.println(" Checking out and Completing Order of " + session.getUsername() + " :...");
+                            System.out.println(" \nTotal Price $" + formater(totalPrice)); 
+                            double tax = totalPrice * 0.08;
+                            
+                            System.out.println(" \nTax:  " + formater(tax)); // total price * 0.08
+                            System.out.println(" \nShipping fee:  $ 5.00"); // 
+                            double finalAmount = totalPrice + tax + 5;
+
+                            System.out.println(" \n\ncart Total= $ " + formater(finalAmount)); // add price + tax + shipping fee
+                            System.out.println(" \nPress Enter to Confirm (x to cancel and clear cart)"); //
+                            String confirm = scan.nextLine();
+
+                            if(confirm.toLowerCase().equals("x")){
+                                break;
+                            }
+                            here:{
+                                while(true){
+                                    System.out.println("\nEnter Card Number:    ");
+                                    String CardDetails = scan.nextLine();
+
+                                    if(!CardDetails.matches("^\\d+$")){
+                                    System.out.println("\nPlease enter Whole Numbers only!");
+                                    System.out.println(" press Enter to continue....");
+                                    scan.nextLine();
+                                    break here;
+                                }
+
+                                System.out.println("\nEnter Card Security code Number:    ");
+                                String CardCode = scan.nextLine();
+                                if(!CardCode.matches("^\\d+$")){
+                                    System.out.println("\nPlease enter Whole Numbers only!");
+                                    System.out.println(" press Enter to continue....");
+                                    scan.nextLine();
+                                    continue;
+                                }
+
+                                System.out.println("\nEnter Card Expiry day :    ");
+                                String CardExpy = scan.nextLine();
+                                scan.nextLine();
+                                
+                                break;
+                            }
+                            System.out.println("\nPayment Processed Successfully...");
+                            try {
+                                if(movingCartItems(cartItems, finalAmount )){
+                                    cartService.celarCart();
+                                }
+                            } catch (PaymentDeclinedException e) {
+                                e.printStackTrace();
                             }
 
-                        System.out.println("\nEnter Card Security code Number:    ");
-                        String CardCode = scan.nextLine();
-                        if(!CardCode.matches("^\\d+$")){
-                            System.out.println("\nPlease enter Whole Numbers only!");
-                            System.out.println(" press Enter to continue....");
                             scan.nextLine();
-                            continue;
+                            System.out.println("Thank you for Placing Your Order...");
+                            scan.nextLine();
+                            break exit;
+                            }
                         }
+                            scan.nextLine();
+                            routerService.navigate("/browse", scan);
+                            break exit;
 
-                        System.out.println("\nEnter Card Expiry day :    ");
-                        String CardExpy = scan.nextLine();
-                        scan.nextLine();
-                        
-                        break;
-                    }
-                        System.out.println("\nPayment Processed Successfully...");
-                        if(movingCartItems(cartItems)){
-                            cartService.celarCart();
-                        }
-
-                        scan.nextLine();
-                        System.out.println("Thank you for Placing Your Order...");
-                        scan.nextLine();
-                        break exit;
-                    }
                     case "x":
                         System.out.print("\nExit Successful.....Goodbye!");
                         break exit;
@@ -228,8 +248,8 @@ public class CartScreen implements IScreen{
 
         /*----------------------> Healper Methods <---------------- */
 
-    private List<CartItems> cartItemsFinder(){
-        return  cartService.findAll();
+    private List<CartItems> cartItemsFinder(String user_id){
+        return  cartService.findAll(user_id);
     }
 
     private Products productFinder(int product_id){
@@ -255,24 +275,57 @@ public class CartScreen implements IScreen{
         System.out.flush();  
     } 
 
-    private boolean movingCartItems(CartItems cartItems){
+    private boolean movingCartItems(CartItems cartItems, double totalPrice) throws PaymentDeclinedException{
 
-        OrderItems orderItems = new OrderItems();
+        boolean bool = false;
+        Orders orders = new Orders();
 
         Random random = new Random();
 
-        orderItems.setOrder_id(random.nextInt());
+        if(bool == false){
+        orders.setOrder_id(random.nextInt());
+        orders.setProduct_name(cartItems.getProduct_name());
+        orders.setTotal_cost(totalPrice);
+        orders.setOrder_time(LocalDate.now());
+        orders.setUser_id(session.getId());
 
-         int order_item_id;
-         int quantity;
-         float price;
-         int order_id;
-         int product_id;
+        bool = true;
+        }else{
+            bool = false;
+            throw new PaymentDeclinedException();    
+        
+        }
 
+        return bool;
+    
+    }
 
-
+    private boolean emptyCart(List cartItemsList){
+        if(cartItemsList.isEmpty()){
+            System.out.println("\n\nYour Cart is Empty...");
+            System.out.println("You can check out our new items by browsing our shop!.... ");
+            System.out.println("\nRedirecting you to Product browsing Page .. .. . ..  .");
+            return false;
+        }
         return true;
     }
+
+    private int inputValidator(String input, int size){
+        int itemNum = 0;
+        if((input.matches("^\\d+$"))){
+
+            itemNum = Integer.parseInt(input);
+                if(itemNum > size ){
+                    System.out.println("Item Could not be removed (WRONG item number)....");
+                    return 0;
+                }
+                return itemNum;
+            }else{
+                    System.out.println("Item Could not be removed (WRONG item number)....");
+                    return 0;
+            } 
+    }
+
 
 
 }
