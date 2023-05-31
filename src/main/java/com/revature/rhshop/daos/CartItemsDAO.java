@@ -288,16 +288,18 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
     }
 
 
-    public void celarCart() {
+    public int celarCart(String user_id) {
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
             //AS total refers to an alias which is used to store the calculated result of the sql statment
-            String sql = "TRUNCATE TABLE cartitems";
+            String sql = "DELETE FROM cartitems WHERE user_id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
 
-                ps.executeUpdate();
+                ps.setString(1, user_id);
+
+               return ps.executeUpdate();
             }
             
         }catch (ClassNotFoundException e){
@@ -318,6 +320,49 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
     public List<CartItems> findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+    }
+
+
+    public CartItems findAllOrders(String user_id) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+
+            CartItems item = new CartItems();
+
+            String sql = "SELECT * FROM cartitems WHERE user_id = ?";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+               
+                ps.setString(1, user_id);
+
+                try(ResultSet rs = ps.executeQuery()){
+                    while(rs.next()){
+                        
+
+                        item.setCart_item_id(rs.getString("cart_item_id"));
+                        item.setProduct_name(rs.getString("product_name"));;
+                        item.setPrice(rs.getFloat("price"));
+                        item.setQuantity(rs.getInt("quantity"));
+                        item.setCart_id(rs.getInt("cart_id"));
+                        item.setProduct_id(rs.getInt("product_id"));
+                        item.setUser_id(rs.getString("user_id"));
+                        
+                    }
+
+                    return item;
+                }
+            }
+            
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Find Class");
+        }catch(IOException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Run");
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to access Database");
+        }
     }
      
 }

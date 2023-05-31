@@ -7,9 +7,12 @@ import java.util.Random;
 import java.util.Scanner;
 
 import com.revature.rhshop.models.CartItems;
+import com.revature.rhshop.models.OrderItems;
 import com.revature.rhshop.models.Orders;
 import com.revature.rhshop.models.Products;
 import com.revature.rhshop.services.CartService;
+import com.revature.rhshop.services.OrderItemsService;
+import com.revature.rhshop.services.OrdersService;
 import com.revature.rhshop.services.ProductService;
 import com.revature.rhshop.services.RouterService;
 import com.revature.rhshop.utils.Session;
@@ -24,6 +27,8 @@ public class CartScreen implements IScreen{
     private final CartService cartService;
     private Session session;
     private final ProductService productService;
+    private final OrdersService ordersService;
+    private final OrderItemsService orderItemsService;
 
     @Override
     public void start(Scanner scan) {
@@ -206,10 +211,18 @@ public class CartScreen implements IScreen{
                                 
                                 break;
                             }
-                            System.out.println("\nPayment Processed Successfully...");
+                            System.out.println("\nPayment is Being processed...");
+
+                            CartItems purchasedItems = allCartItemsFinder(session.getId());
+                            orderItemsService.movingCartItems(purchasedItems);
+
                             try {
+                                //this will move cart items into orders table to keeo it as an order history
+
                                 if(movingCartItems(cartItems, finalAmount )){
-                                    cartService.celarCart();
+                                    if(cartService.celarCart(session.getId()) > 0){
+                                        System.out.println("Payment Processed Successfully");
+                                    }
                                 }
                             } catch (PaymentDeclinedException e) {
                                 e.printStackTrace();
@@ -253,6 +266,13 @@ public class CartScreen implements IScreen{
 
         /*----------------------> Healper Methods <---------------- */
 
+    private CartItems allCartItemsFinder(String user_id) {
+        return  cartService.findAllItems(user_id);
+    }
+
+
+
+
     private List<CartItems> cartItemsFinder(String user_id){
         return  cartService.findAll(user_id);
     }
@@ -282,26 +302,18 @@ public class CartScreen implements IScreen{
 
     private boolean movingCartItems(CartItems cartItems, double totalPrice) throws PaymentDeclinedException{
 
-        boolean bool = false;
         Orders orders = new Orders();
 
         Random random = new Random();
 
-        if(bool == false){
         orders.setOrder_id(random.nextInt());
         orders.setProduct_name(cartItems.getProduct_name());
         orders.setTotal_cost(totalPrice);
         orders.setOrder_time(LocalDate.now());
         orders.setUser_id(session.getId());
 
-        bool = true;
-        }else{
-            bool = false;
-            throw new PaymentDeclinedException();    
         
-        }
-
-        return bool;
+        return ordersService.movingCartItems(orders);
     
     }
 

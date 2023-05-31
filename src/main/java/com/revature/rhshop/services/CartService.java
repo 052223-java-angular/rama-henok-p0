@@ -6,7 +6,6 @@ import com.revature.rhshop.daos.CartItemsDAO;
 import com.revature.rhshop.daos.CartDAO;
 import com.revature.rhshop.models.CartItems;
 import com.revature.rhshop.models.Carts;
-import com.revature.rhshop.utils.Session;
 
 import lombok.AllArgsConstructor;
 
@@ -64,8 +63,13 @@ public class CartService {
     
     }
 
-    public void celarCart() {
-        cartItemsDAO.celarCart();
+    public int celarCart(String user_id) {
+       return cartItemsDAO.celarCart(user_id);
+    }
+
+    public CartItems findAllItems(String user_id) {
+        // retrive all cart items as an object
+        return cartItemsDAO.findAllOrders(user_id);
     }
 
    
