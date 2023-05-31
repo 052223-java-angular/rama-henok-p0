@@ -56,9 +56,9 @@ public class CartService {
        cartItemsDAO.save(cartItems);
     }
 
-    public double totalPriceCalculator() {
+    public double totalPriceCalculator(String user_id) {
 
-        return cartItemsDAO.priceCalculator();
+        return cartItemsDAO.priceCalculator(user_id);
 
     
     }

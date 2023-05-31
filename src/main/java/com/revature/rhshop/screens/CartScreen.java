@@ -259,7 +259,7 @@ public class CartScreen implements IScreen{
     }
 
     private double priceCalculator(){
-      return  cartService.totalPriceCalculator();
+      return  cartService.totalPriceCalculator(session.getId());
     }
     
     private String formater(double number){

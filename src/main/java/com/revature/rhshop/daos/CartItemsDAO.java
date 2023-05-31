@@ -58,47 +58,47 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
     }
 
 
-    public CartItems findById7(String cart_item_id) {
+    // public CartItems findById7(String cart_item_id) {
 
-        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+    //     try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
-            String sql = "SELECT * FROM cartitems WHERE cart_item_id = ?";
+    //         String sql = "SELECT * FROM cartitems WHERE cart_item_id = ?";
 
-            try(PreparedStatement ps = conn.prepareStatement(sql)){
+    //         try(PreparedStatement ps = conn.prepareStatement(sql)){
 
-                ps.setString(1, cart_item_id);
+    //             ps.setString(1, cart_item_id);
 
-                try(ResultSet rs = ps.executeQuery()){
-                    if(rs.next()){
-                        CartItems item = new CartItems();
+    //             try(ResultSet rs = ps.executeQuery()){
+    //                 if(rs.next()){
+    //                     CartItems item = new CartItems();
 
-                        item.setProduct_name(rs.getString("product_name"));;
-                        item.setPrice(rs.getFloat("price"));
-                        item.setQuantity(rs.getInt("quantity"));
-                        item.setCart_id(rs.getInt("cart_id"));
-                        item.setProduct_id(rs.getInt("product_id"));
-                        item.setUser_id(rs.getString("user_id"));
-                        return item;
-                    }
-                }
-            }
+    //                     item.setProduct_name(rs.getString("product_name"));;
+    //                     item.setPrice(rs.getFloat("price"));
+    //                     item.setQuantity(rs.getInt("quantity"));
+    //                     item.setCart_id(rs.getInt("cart_id"));
+    //                     item.setProduct_id(rs.getInt("product_id"));
+    //                     item.setUser_id(rs.getString("user_id"));
+    //                     return item;
+    //                 }
+    //             }
+    //         }
             
-        }catch (ClassNotFoundException e){
-            e.printStackTrace();
-            throw new RuntimeException("Unable to Find Class");
-        }catch(IOException e){
-            e.printStackTrace();
-            throw new RuntimeException("Unable to Run");
+    //     }catch (ClassNotFoundException e){
+    //         e.printStackTrace();
+    //         throw new RuntimeException("Unable to Find Class");
+    //     }catch(IOException e){
+    //         e.printStackTrace();
+    //         throw new RuntimeException("Unable to Run");
 
-        }catch(SQLException e){
-            e.printStackTrace();
-            throw new RuntimeException("Unable to access Database");
-        }
+    //     }catch(SQLException e){
+    //         e.printStackTrace();
+    //         throw new RuntimeException("Unable to access Database");
+    //     }
 
-        return null;
+    //     return null;
 
         
-    }
+    // }
 
     public String findByProductName(String product_name) {
 
@@ -248,15 +248,17 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
     }
 
 
-    public double priceCalculator() {
+    public double priceCalculator(String user_id) {
         double total = 0.00;
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
             //AS total refers to an alias which is used to store the calculated result of the sql statment
-            String sql = "SELECT SUM(quantity * price) AS total FROM cartitems";
+            String sql = "SELECT SUM(quantity * price) AS total FROM cartitems where user_id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
+                
+                ps.setString(1, user_id);
 
                 try(ResultSet rs = ps.executeQuery()){
                     if (rs.next()) {
