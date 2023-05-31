@@ -29,6 +29,9 @@ public class CartScreen implements IScreen{
     public void start(Scanner scan) {
         String input = "";
         String intValue = "";
+        int itemIndex = 0;
+        String cartItemId = "";
+        CartItems cartItems = new CartItems();
 
         exit: {
             while(true){
@@ -41,10 +44,10 @@ public class CartScreen implements IScreen{
                 emptyCart(cartItemsList);// this will check if the cart is empty or not 
 
                 for(int i = 0; i < cartItemsList.size(); i++){
-                    CartItems cartItems = cartItemsList.get(i);
+                    CartItems cartItemsDisplay = cartItemsList.get(i);
                     int index = i+1;
-                    System.out.println("\nItemNum " + index + "     Product Name: " + cartItems.getProduct_name()+ 
-                    "       Price: $ " + cartItems.getPrice() + "     Quantity= " + cartItems.getQuantity()); //add product name from cartitems table
+                    System.out.println("\nItemNum " + index + "     Product Name: " + cartItemsDisplay.getProduct_name()+ 
+                    "       Price: $ " + cartItemsDisplay.getPrice() + "     Quantity= " + cartItemsDisplay.getQuantity()); //add product name from cartitems table
                 }
 
                 System.out.println("---------------------------------------------------------------------------------------------");
@@ -53,11 +56,6 @@ public class CartScreen implements IScreen{
 
                 System.out.print("\nEnter Option (x ot cancel):  ");
                 input = scan.nextLine();
-
-
-                int itemIndex = 0;
-                String cartItemId = "";
-                CartItems cartItems = new CartItems();
 
                 switch (input.toLowerCase()) {
     
@@ -86,7 +84,7 @@ public class CartScreen implements IScreen{
                             cartItemId = cartItems.getCart_item_id();
                             
                             
-                            if(cartService.delete(cartItemId) == true){
+                            if(cartService.delete(cartItemId, session.getId()) == true){
 
                                 System.out.println("Item removed From cart Successfuly!...");
                                 scan.nextLine();
@@ -96,10 +94,12 @@ public class CartScreen implements IScreen{
                             
                                 scan.nextLine();
                                 break;
-                        }
+                        }else{
                             scan.nextLine();
                             routerService.navigate("/browse", scan);
                             break exit;
+                        }
+                       
 //,,,,,,,,,,,,,,
                     case "e":
                         if(emptyCart(cartItemsList)){ 
@@ -145,15 +145,17 @@ public class CartScreen implements IScreen{
                                 scan.nextLine();
                                 break;
                             }
-                            cartService.updateQuantity(cartItemId, newQuantity); 
+                            cartService.updateQuantity(cartItemId, newQuantity, session.getId()); 
                             // cartService.findById();    this option needs to get cart_id from cart table using the user id i can get the cart id
                             //fusing cart_id i can get the cart items of the user then i can get all the info in the cart                  
 
                             //
-                        }
+                        }else{
                             scan.nextLine();
                             routerService.navigate("/browse", scan);
                             break exit;
+                        }
+                        break;
 
                     case "c":
                         if(emptyCart(cartItemsList)){ 
@@ -185,7 +187,8 @@ public class CartScreen implements IScreen{
                                     System.out.println("\nPlease enter Whole Numbers only!");
                                     System.out.println(" press Enter to continue....");
                                     scan.nextLine();
-                                    break here;
+                                    // break here;
+                                    continue;
                                 }
 
                                 System.out.println("\nEnter Card Security code Number:    ");
@@ -217,10 +220,12 @@ public class CartScreen implements IScreen{
                             scan.nextLine();
                             break exit;
                             }
-                        }
+                            }else{
                             scan.nextLine();
                             routerService.navigate("/browse", scan);
                             break exit;
+                        }
+                        // break;
 
                     case "x":
                         System.out.print("\nExit Successful.....Goodbye!");

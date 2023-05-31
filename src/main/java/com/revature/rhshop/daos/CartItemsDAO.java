@@ -58,57 +58,59 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
     }
 
 
-    // public CartItems findById7(String cart_item_id) {
-
-    //     try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-
-    //         String sql = "SELECT * FROM cartitems WHERE cart_item_id = ?";
-
-    //         try(PreparedStatement ps = conn.prepareStatement(sql)){
-
-    //             ps.setString(1, cart_item_id);
-
-    //             try(ResultSet rs = ps.executeQuery()){
-    //                 if(rs.next()){
-    //                     CartItems item = new CartItems();
-
-    //                     item.setProduct_name(rs.getString("product_name"));;
-    //                     item.setPrice(rs.getFloat("price"));
-    //                     item.setQuantity(rs.getInt("quantity"));
-    //                     item.setCart_id(rs.getInt("cart_id"));
-    //                     item.setProduct_id(rs.getInt("product_id"));
-    //                     item.setUser_id(rs.getString("user_id"));
-    //                     return item;
-    //                 }
-    //             }
-    //         }
-            
-    //     }catch (ClassNotFoundException e){
-    //         e.printStackTrace();
-    //         throw new RuntimeException("Unable to Find Class");
-    //     }catch(IOException e){
-    //         e.printStackTrace();
-    //         throw new RuntimeException("Unable to Run");
-
-    //     }catch(SQLException e){
-    //         e.printStackTrace();
-    //         throw new RuntimeException("Unable to access Database");
-    //     }
-
-    //     return null;
-
-        
-    // }
-
-    public String findByProductName(String product_name) {
+    @Override
+    public CartItems findById(String cart_item_id) {
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
-            String sql = "SELECT * FROM cartitems WHERE product_name = ?";
+            String sql = "SELECT * FROM cartitems WHERE cart_item_id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
 
-                ps.setString(1, product_name);
+                ps.setString(1, cart_item_id);
+
+                try(ResultSet rs = ps.executeQuery()){
+                    if(rs.next()){
+                        CartItems item = new CartItems();
+
+                        item.setProduct_name(rs.getString("product_name"));;
+                        item.setPrice(rs.getFloat("price"));
+                        item.setQuantity(rs.getInt("quantity"));
+                        item.setCart_id(rs.getInt("cart_id"));
+                        item.setProduct_id(rs.getInt("product_id"));
+                        item.setUser_id(rs.getString("user_id"));
+                        return item;
+                    }
+                }
+            }
+            
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Find Class");
+        }catch(IOException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to Run");
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            throw new RuntimeException("Unable to access Database");
+        }
+
+        return null;
+
+        
+    }
+
+    public String findByProductName(String user_id, String product_name) {
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+
+            String sql = "SELECT * FROM cartitems WHERE user_id = ? AND product_name = ?";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+
+                ps.setString(1, user_id);
+                ps.setString(2, product_name);
 
                 try(ResultSet rs = ps.executeQuery()){
                     if(rs.next()){
@@ -158,6 +160,7 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
                         item.setQuantity(rs.getInt("quantity"));
                         item.setCart_id(rs.getInt("cart_id"));
                         item.setProduct_id(rs.getInt("product_id"));
+                        item.setUser_id(rs.getString("user_id"));
                         
                         cartItemsList.add(item);
                     }
@@ -182,16 +185,17 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
     
 
 
-    public int updateQuantity(String id, int quantity) {
+    public int updateQuantity(String id, int quantity, String user_id) {
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
-            String sql = "UPDATE cartitems SET quantity = ?  WHERE cart_item_id = ?";
+            String sql = "UPDATE cartitems SET quantity = ?  WHERE cart_item_id = ? AND user_id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
 
                 ps.setInt(1, quantity);
                 ps.setString(2, id);
+                ps.setString(3, user_id);
 
                return ps.executeUpdate();
             }
@@ -211,15 +215,16 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
     }
 
     
-    public boolean deleteById(String cart_item_id) {
+    public boolean deleteById(String cart_item_id, String user_id) {
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
 
-            String sql = "DELETE FROM cartitems WHERE cart_item_id = ?";
+            String sql = "DELETE FROM cartitems WHERE cart_item_id = ? AND user_id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
 
                 ps.setString(1, cart_item_id);
+                ps.setString(2, user_id);
 
                 int rows = ps.executeUpdate();
 
@@ -313,13 +318,6 @@ public class CartItemsDAO implements CrudDAO<CartItems> {
     public List<CartItems> findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
-    }
-
-
-    @Override
-    public CartItems findById(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
      
 }
