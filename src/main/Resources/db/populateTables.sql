@@ -43,7 +43,8 @@ product_id serial primary key,
 product_name VARCHAR not null unique,
 price float not null,
 stock int not null,
-category_name VARCHAR not null  );
+category_name VARCHAR not null  
+);
 
 
 
@@ -73,11 +74,14 @@ price float not null,
 quantity int not null,
 cart_id int,
 product_id int, 
+user_id Varchar,
 FOREIGN KEY (cart_id) REFERENCES carts(cart_id),
+FOREIGN KEY (user_id) REFERENCES users(user_id),
 FOREIGN KEY (product_id) REFERENCES products(product_id)
+
 );
 
-insert into cartitems (cart_item_id, product_name,  price, quantity, cart_id, product_id ) values ('69', 'Computer Eyeglass', '44', '39', '39', '6');
+insert into cartitems (cart_item_id, product_name,  price, quantity, cart_id, product_id, user_id ) values ('69', 'Computer Eyeglass', '44', '39', '39', '6', 'hehehee');
 
 
 create table orders(
