@@ -208,15 +208,20 @@ public class CartScreen implements IScreen{
                                 System.out.println("\nEnter Card Expiry day :    ");
                                 String CardExpy = scan.nextLine();
                                 scan.nextLine();
+
+
+                                System.out.println("\nEnter a Coupone :    ");
+                                String coupone = scan.nextLine();
+                                scan.nextLine();
                                 
                                 break;
-                            }
-                            System.out.println("\nPayment is Being processed...");
+                                 }
+                                System.out.println("\nPayment is Being processed...");
 
                             try {
                                 //this will move cart items into orders table to keeo it as an order history
                                 int order_id = movingCartItems(cartItems, finalAmount) ;
-                                System.out.println(order_id);
+                                
                                 if(order_id > 0){
                                     if(cartService.celarCart(session.getId()) != 0){
                                         CartItems purchasedItems = allCartItemsFinder(session.getId());
